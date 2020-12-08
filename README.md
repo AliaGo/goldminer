@@ -1,2 +1,2 @@
 # goldminer
-python programming
+大家一起挖金礦
