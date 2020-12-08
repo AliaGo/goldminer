@@ -1,0 +1,2 @@
+# goldminer
+python programming
