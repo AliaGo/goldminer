@@ -70,10 +70,13 @@ button = Button(upImageFilename,downImageFilename, (500, 500))
 pygame.display.update()
 
 
-
+stop = ''
 # 事件迴圈監聽事件，進行事件處理
 while True:
-    button.render()
+    if '10' not in stop:
+        button.render()
+    else:
+        window_surface.blit(background, (0, 0))
     # 迭代整個事件迴圈，若有符合事件則對應處理
     for event in pygame.event.get():
         # 當使用者結束視窗，程式也結束
@@ -81,8 +84,10 @@ while True:
             sys.exit()
         # get_pressed() 告訴您按下哪個鼠標按鈕
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            window_surface.blit(background,(0,0))
+            if button.isOver() is True:
+                stop += '1'
         # 如果釋放鼠標
         elif event.type == pygame.MOUSEBUTTONUP:
-            window_surface.blit(background,(0,0))
+            if button.isOver() is True:
+                stop += '0'
     pygame.display.update()
