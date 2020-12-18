@@ -8,7 +8,7 @@ from pygame.locals import QUIT
 pygame.init()
 
 screen = pygame.display.set_mode((400, 300))  # 打字框
-pygame.display.set_caption('Keybroad Example')  # 命名
+pygame.display.set_caption('Keyboard Example')  # 命名
 pygame.display.update()
 
 
@@ -61,5 +61,3 @@ while True:
             else:  # 其他
                 str += chr(event.key)
                 drawText(str)
-
-
