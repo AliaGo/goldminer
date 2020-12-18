@@ -3,7 +3,7 @@ pygame.init()
 screen = pygame.display.set_mode((128, 128))
 clock = pygame.time.Clock()
 
-counter, text = 10, '60'.rjust(3)
+counter, text = 60, '60'.rjust(3)
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 font = pygame.font.SysFont('Consolas', 30)
 
