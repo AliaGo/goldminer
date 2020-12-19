@@ -53,6 +53,11 @@ class Button(object):
 bet_button = Button(bet, bet_pressed, (0,525), (150, 75))
 passbuttom = Button(passbuttom, passbuttom_pressed, (0,0), (150, 75))
 
+# 叫對話框
+messenger = pygame.image.load('text.png')
+messenger = pygame.transform.scale(messenger, (300,300))
+window_surface.blit(messenger, (450,80))
+
 # 叫道具
 boom = 'boom.png'
 boom_pressed = 'boom ver.dark.png'
