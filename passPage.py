@@ -11,13 +11,9 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('congradulation')  # 命名
 
 
-background = pygame.image.load('pass.jpg').convert_alpha()  # 背景
-background = pygame.transform.scale(background, (800, 700))
+background = pygame.image.load('achieve.png').convert_alpha()  # 背景
+background = pygame.transform.scale(background, (800, 600))
 screen.blit(background,(0, 0))
-
-congrats = pygame.image.load('frame.png').convert_alpha()
-congrats = pygame.transform.scale(congrats, (500, 400))
-screen.blit(congrats,(150,100))
 
 pygame.display.update()
 
