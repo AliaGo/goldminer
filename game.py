@@ -20,7 +20,7 @@ police = pygame.image.load("police.png").convert_alpha()
 police = pygame.transform.scale(police, (40,70))
 
 # 宣告 font 文字物件
-head_font = pygame.font.SysFont('NotoSansMonoCJKtc-Bold.otf', 45)
+head_font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
 # 渲染方法會回傳 surface 物件
 current_goal = 0
 curr_goal_text = head_font.render('業績:   $'+str(current_goal), True, (200, 255, 255))
@@ -61,7 +61,7 @@ class Scammer(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('scammer.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (40,40))
+        self.image = pygame.transform.scale(self.image, (50,50))
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
 
