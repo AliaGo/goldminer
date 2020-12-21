@@ -353,7 +353,7 @@ pygame.time.wait(2000)
 
 window_surface.fill((255, 255, 255))
 # 商店背景
-background = pygame.image.load('store2.jpg').convert_alpha()
+background = pygame.image.load('store1.png').convert_alpha()
 background = pygame.transform.smoothscale(background, (800,600))
 
 # 下注背景
