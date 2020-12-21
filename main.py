@@ -17,10 +17,10 @@ screen.fill((255, 255, 255))
 # 遊戲開始畫面
 background = pygame.image.load('background1.png').convert_alpha()
 background = pygame.transform.scale(background, (800,600))
-screen.blit(background,(0,0))  #对齐的坐标
+screen.blit(background,(0,0))  # 對齊的座標
 beginPolice = pygame.image.load('begin.png').convert_alpha()
 beginPolice = pygame.transform.scale(beginPolice, (350,350))
-screen.blit(beginPolice,(0,50))  #对齐的坐标
+screen.blit(beginPolice,(0,50))  # 對齊的座標
 
 # 宣告 font 文字物件
 word = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 60)
@@ -31,8 +31,8 @@ screen.blit(text_surface, (400, 200))
 
 # 背景音樂
 pygame.mixer.init()
-pygame.mixer.music.load('BGM.mp3')    # 加载背景音乐
-pygame.mixer.music.set_volume(0.8)                   # 设置音量
+pygame.mixer.music.load('Giornos Theme.mp3')
+pygame.mixer.music.set_volume(0.7)                   # 設音量
 pygame.mixer.music.play(-1)
 
 
@@ -121,11 +121,10 @@ while True:
         # 當使用者結束視窗，程式也結束
         if event.type == pygame.QUIT:
             sys.exit()
-        # get_pressed() 告訴您按下哪個鼠標按鈕
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if button1.isOver() is True:
                 stop += '1'
-        # 如果釋放鼠標
+        # 如果釋放滑鼠按鈕
         elif event.type == pygame.MOUSEBUTTONUP:
             if button1.isOver() is True:
                 stop += '0'
@@ -149,7 +148,6 @@ while True:
         # 當使用者結束視窗，程式也結束
         if event.type == pygame.QUIT:
             sys.exit()
-        # get_pressed() 告訴您按下哪個鼠標按鈕
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if button2.isOver() is True:
                 stop += '1'
@@ -165,7 +163,7 @@ ani = 4
 clock = pygame.time.Clock()
 pygame.init()
 
-# 设置游戏窗口
+# 設遊戲視窗
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("警察抓犯人")
 background = pygame.image.load("background3.png").convert_alpha()
@@ -174,7 +172,7 @@ background = pygame.transform.scale(background, (800,600))
 police = pygame.image.load("police.png").convert_alpha()
 police = pygame.transform.scale(police, (40,70))
 
-# 宣告 font 文字物件
+# 放字體
 head_font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
 current_goal = 0
 curr_goal_text = head_font.render('業績:     $'+str(current_goal), True, (200, 255, 255))
@@ -463,13 +461,13 @@ dec4_pressed = 'detective4 dark.png'
 dec4_scale = (140,140)
 dec4_buttom = Button(dec4, dec4_pressed, (560, 150), dec4_scale)
 
-#建偵探字
+# 建偵探字
 d1_text = '成功機率巴'
 d2_text = '成功機率巴拉'
 d3_text = '成功機率巴拉拉'
 d4_text = '成功機率巴拉拉拉'
 
-#建偵探字tuple
+# 建偵探字tuple
 decs_text_tuple = [(dec1_buttom, d1_text), (dec2_buttom, d2_text), (dec3_buttom, d3_text), (dec4_buttom, d4_text)]
   
 # 叫價錢版
@@ -485,10 +483,10 @@ def randomprice():
     price = notoSans_40.render(randomprice, True, (255,245,238))
     return price
     
-#建現在資金
+# 建現在資金
 money = notoSans_40.render('$現在金額', True, (255,250,250))
 
-#建偵探價格
+# 建偵探價格
 d1_price =  notoSans_20.render('$500', True, (255,250,250))
 d2_price =  notoSans_20.render('$700', True, (255,250,250))
 d3_price =  notoSans_20.render('$900', True, (255,250,250))
@@ -581,13 +579,12 @@ while True:
         # 當使用者結束視窗，程式也結束
         if event.type == pygame.QUIT:
             sys.exit()
-        # get_pressed() 告訴您按下哪個鼠標按鈕
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if bet_button.isOver() is True:
                 stop.append('1')
             elif b2store_button.isOver() is True:
                 stop.remove('1')
-        # 如果釋放鼠標
+        # 如果釋放滑鼠按鈕
         elif event.type == pygame.MOUSEBUTTONUP:
             if bet_button.isOver() is True:
                 stop.append('0')
