@@ -135,7 +135,7 @@ g_pricetag = pygame.transform.smoothscale(g_pricetag, (130,65))
 
 # 產生隨機價錢
 def randomprice():
-    k1 = random.randint(1,500)
+    k1 = random.randint(30,500)
     randomprice = '$' + str(k1)
     price = notoSans_40.render(randomprice, True, (255,245,238))
     return price
