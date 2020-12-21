@@ -31,8 +31,8 @@ screen.blit(text_surface, (400, 200))
 
 # 背景音樂
 pygame.mixer.init()
-pygame.mixer.music.load('Giornos Theme.mp3')    # 加载背景音乐
-pygame.mixer.music.set_volume(0.7)                   # 设置音量
+pygame.mixer.music.load('BGM.mp3')    # 加载背景音乐
+pygame.mixer.music.set_volume(0.8)                   # 设置音量
 pygame.mixer.music.play(-1)
 
 
