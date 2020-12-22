@@ -32,7 +32,7 @@ screen.blit(text_surface, (400, 200))
 # 背景音樂
 pygame.mixer.init()
 pygame.mixer.music.load('BGM.mp3')
-pygame.mixer.music.set_volume(0.7)                   # 設音量 goal
+pygame.mixer.music.set_volume(0.7)  # 設音量
 pygame.mixer.music.play(-1)
 
 
@@ -45,7 +45,7 @@ class Button(object):
         self.imageDown = pygame.transform.scale(self.imageDown, (300,100))
         self.position = position
 
-    def isOver(self):
+    def isOver(self):  # 若按鈕位置重疊 兩個按鈕都會計算
         point_x,point_y = pygame.mouse.get_pos()
         x, y = self. position
         w, h = self.imageUp.get_size()
@@ -54,7 +54,7 @@ class Button(object):
         in_y = y - h/2 < point_y < y + h/2
         return in_x and in_y
 
-    def render(self):
+    def render(self):  # 畫
         w, h = self.imageUp.get_size()
         x, y = self.position
         
@@ -94,7 +94,6 @@ upImageFilename = 'next.png'
 downImageFilename = 'next1.png'
 button2 = Button(upImageFilename,downImageFilename, (400, 500))
 
-goal = [650,1350,2410,3940,6060,9980]
 # 本關目標業績畫面
 background1 = pygame.image.load('goal.png').convert_alpha()  # 背景
 background1 = pygame.transform.scale(background1, (800, 600))
@@ -111,9 +110,9 @@ pygame.display.update()
 stop = ''
 # 事件迴圈監聽事件，進行事件處理
 while True:
-    if '10' not in stop:
+    if '10' not in stop:  # 起始頁
         button1.render()
-    else:
+    else:  # 遊戲說明頁面
         screen.fill((255,255,255))
         screen.blit(background, (0, 0))
         Instruction()
@@ -132,21 +131,27 @@ while True:
                 stop += '0'
     pygame.display.update()
 
+def curr_goal(now_level):  # 目標業績頁面
+    screen.fill((200,200,200))
+    screen.blit(background1,(0, 0))
+    word1 = pygame.font.Font("NotoSansMonoCJKtc-Bold.otf" ,120)
+    text = word1.render('$' + str(goal[now_level]), True, (250, 155, 0))
+    screen.blit(text,(300, 300))  # 對齊
+    pygame.display.flip()
+    pygame.time.wait(2000)
+    screen.fill((255,255,255))
+    pygame.display.update()
+
+
+goal = [650,1350,2410,3940,6060,9980]  # 目標業績
+now_level = 0  # 現在關卡
 stop = ''
-# 事件迴圈監聽事件，進行事件處理
+# 事件迴圈監聽事件，進行事件處理(遊戲說明)
 while True:
     if '10' not in stop:
         button2.render()
     else:
-        screen.fill((200,200,200))
-        screen.blit(background1,(0, 0))
-        word1 = pygame.font.Font("NotoSansMonoCJKtc-Bold.otf" ,120)
-        text = word1.render(str(goal[0]), True, (250, 155, 0))
-        screen.blit(text,(325, 300))
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        screen.fill((255,255,255))
-        pygame.display.update()
+        curr_goal(now_level)
         break
     # 迭代整個事件迴圈，若有符合事件則對應處理
     for event in pygame.event.get():
@@ -173,7 +178,7 @@ screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("警察抓犯人")
 background = pygame.image.load("background3.png").convert_alpha()
 background = pygame.transform.scale(background, (800,600))
-# 第一關
+# 放警察
 police = pygame.image.load("police.png").convert_alpha()
 police = pygame.transform.scale(police, (40,70))
 
@@ -183,9 +188,10 @@ current_goal = 0
 curr_goal_text = head_font.render('業績:     $'+str(current_goal), True, (200, 255, 255))
 
 
-
+# 時間文字
 time_text = head_font.render('時間', True, (200, 255, 255))
 
+# 關卡
 level = []
 for i in range(1,1000):
     level.append(int(i))
@@ -193,7 +199,7 @@ for i in range(1,1000):
 pygame.display.flip()
 clock.tick(fps)
 
-
+# 精靈們
 class Killer(pygame.sprite.Sprite):    
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -268,6 +274,7 @@ class Tnt(pygame.sprite.Sprite):
 
 ALPHA = (0,0,0)
 
+# 每關分布
 class Level():
     def Criminal(lvl):
         if lvl == 1:
@@ -806,7 +813,7 @@ def Congrats():
         return price
         
     # 建現在資金
-    money = notoSans_40.render('$現在金額', True, (255,250,250))
+    money = notoSans_40.render('現有資金: $' + str(current_goal), True, (255,250,250))  # 位置要調
 
     # 建偵探價格
     d1_price =  notoSans_20.render('$500', True, (255,250,250))
@@ -856,7 +863,7 @@ def Congrats():
     stop = []
     # 事件迴圈監聽事件，進行事件處理
     while True:
-        if '1' not in stop and '0' not in stop:
+        if '1' not in stop:  # 商店
             window_surface.blit(background,(0,0))
             bet_button.render()
             passbuttom.render()
@@ -876,7 +883,7 @@ def Congrats():
             for item_tuple in currentitems:
                 text = whichitem(item_tuple[0])
                 item_tuple[1].render(text,messenger, (525,150), (430,50),notoSans_20,(41,36,33))        
-        else:
+        else:  # 下注
             window_surface.blit(de_background, (0, 0))
             window_surface.blit(money, (550,0))
             b2store_button.render()
@@ -895,7 +902,10 @@ def Congrats():
             window_surface.blit(d4_price, (565,350))
             for currentdec in decs_text_tuple:
                 currentdec[0].render(text = currentdec[1], text_position = (130, 430),fontsize = notoSans_40,color = (255,250,250))
-            
+        if '2' in stop:
+            stop = []
+            break
+
         # 迭代整個事件迴圈，若有符合事件則對應處理
         for event in pygame.event.get():
             # 當使用者結束視窗，程式也結束
@@ -903,15 +913,23 @@ def Congrats():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if bet_button.isOver() is True:
-                    stop.append('1')
-                elif b2store_button.isOver() is True:
-                    stop.remove('1')
+                    push = 0
+                elif b2store_button.isOver() is True and stop != []:
+                    push = 1
+                elif passbuttom.isOver() is True and stop == []:
+                    push = 2
             # 如果釋放滑鼠按鈕
             elif event.type == pygame.MOUSEBUTTONUP:
                 if bet_button.isOver() is True:
-                    stop.append('0')
-                elif b2store_button.isOver() is True:
-                    stop.remove('0')
+                    if push == 0:
+                        stop.append('1')
+                elif b2store_button.isOver() is True and stop != []:
+                    if push == 1:
+                        stop.remove('1')
+                elif passbuttom.isOver() is True and stop == []:
+                    if push == 2:
+                        stop.append('2')
+
         pygame.display.update()
 
 
@@ -936,11 +954,12 @@ def Gameover():
                 sys.exit()
         pygame.display.update()
 
+# 第一關
+criminal_list = Level.Criminal(now_level + 1)
+goal_text = head_font.render('目標業績: $'+str(goal[now_level]), True, (200, 255, 255))
+level_text = head_font.render('Level '+str(level[now_level]), True, (200, 255, 255))
 
-criminal_list = Level.Criminal(1)
-goal_text = head_font.render('目標業績: $'+str(goal[0]), True, (200, 255, 255))
-level_text = head_font.render('Level '+str(level[0]), True, (200, 255, 255))
-
+# 計時器
 counter, text = 5, '5'.rjust(3)
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
@@ -954,12 +973,19 @@ while True:
             if counter >= 0:
                 text = str(counter).rjust(3)
             else:
-                if current_goal >= goal[0]:
+                if current_goal <= goal[0]:  ############要修成 >= #######################
                     Congrats()
+                    now_level += 1
+                    counter = 7  # 不知道為甚麼要多2
+                    criminal_list = Level.Criminal(now_level + 1)
+                    goal_text = head_font.render('目標業績: $'+str(goal[now_level]), True, (200, 255, 255))
+                    level_text = head_font.render('Level '+str(level[now_level]), True, (200, 255, 255))
+                    curr_goal(now_level)
+                    # 更新資訊
                 else:
                     Gameover()
         if event.type == pygame.QUIT: break
-    else:
+    else:  # 遊戲畫面
         screen.blit(font.render(text, True, (200, 255, 255)), (720, 10))
         pygame.display.flip()
         clock.tick(20)
