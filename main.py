@@ -32,7 +32,7 @@ screen.blit(text_surface, (400, 200))
 # 背景音樂
 pygame.mixer.init()
 pygame.mixer.music.load('BGM.mp3')
-pygame.mixer.music.set_volume(0.7)                   # 設音量
+pygame.mixer.music.set_volume(0.7)                   # 設音量 goal
 pygame.mixer.music.play(-1)
 
 
@@ -94,9 +94,11 @@ upImageFilename = 'next.png'
 downImageFilename = 'next1.png'
 button2 = Button(upImageFilename,downImageFilename, (400, 500))
 
+goal = [650,1350,2410,3940,6060,9980]
 # 本關目標業績畫面
 background1 = pygame.image.load('goal.png').convert_alpha()  # 背景
 background1 = pygame.transform.scale(background1, (800, 600))
+
 
 # 正式遊戲畫面
 background2 = pygame.image.load('background3.png').convert_alpha()
@@ -138,6 +140,9 @@ while True:
     else:
         screen.fill((200,200,200))
         screen.blit(background1,(0, 0))
+        word1 = pygame.font.Font("NotoSansMonoCJKtc-Bold.otf" ,120)
+        text = word1.render(str(goal[0]), True, (250, 155, 0))
+        screen.blit(text,(325, 300))
         pygame.display.flip()
         pygame.time.wait(2000)
         screen.fill((255,255,255))
@@ -177,7 +182,7 @@ head_font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
 current_goal = 0
 curr_goal_text = head_font.render('業績:     $'+str(current_goal), True, (200, 255, 255))
 
-goal = [650,1350,2410,3940,6060,9980]
+
 
 time_text = head_font.render('時間', True, (200, 255, 255))
 
