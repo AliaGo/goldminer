@@ -622,7 +622,7 @@ def Type(object_str):
                     drawText(str)
 
 # 手銬
-class handcuff():
+class Handcuff():
     def Catch(self):
         killer_hit_list = pygame.sprite.spritecollide(self, killer_list, False)
         for k in killer_hit_list:
