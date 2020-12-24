@@ -145,7 +145,7 @@ def curr_goal(now_level):  # 目標業績頁面
     pygame.display.update()
 
 
-goal = [750, 1750, 3210, 5610, 7845, 13500]  # 目標業績
+goal = [750, 1350, 2210, 3210, 4045, 5500, 6780, 7560, 8900, 10000]  # 目標業績
 now_level = 0  # 現在關卡
 stop = ''
 # 事件迴圈監聽事件，進行事件處理(遊戲說明)
@@ -528,6 +528,194 @@ class Level():
             criminal_list.add(tnt_list)
             criminal_list.add(triangle_list)
             criminal_list.add(drink_list)
+        if lvl == 7:
+            pos_x = [70,360,550]
+            pos_y = [400,450,420]
+            for i in range(3):
+                killer = Killer()
+                killer.rect.x = pos_x[i]
+                killer.rect.y = pos_y[i]
+                killer_list.add(killer)
+            pos_x = [300,330,390,450,600,670,730]
+            pos_y = [200,300,150,310,200,330,155]
+            for i in range(7):
+                triangle = Triangle()
+                triangle.rect.x = pos_x[i]
+                triangle.rect.y = pos_y[i]
+                triangle_list.add(triangle)
+            pos_x = [710]
+            pos_y = [460]
+            for i in range(1):
+                bad = Bad()
+                bad.rect.x = pos_x[i]
+                bad.rect.y = pos_y[i]
+                bad_list.add(bad)
+            pos_x = [100,180]
+            pos_y = [150,230]
+            for i in range(2):
+                stealer = Stealer()
+                stealer.rect.x = pos_x[i]
+                stealer.rect.y = pos_y[i]
+                stealer_list.add(stealer)
+            pos_x = [40,70]
+            pos_y = [350,540]
+            for i in range(2):
+                drink = Drink()
+                drink.rect.x = pos_x[i]
+                drink.rect.y = pos_y[i]
+                drink_list.add(drink)
+            pos_x = [680]
+            pos_y = [205]
+            for i in range(1):
+                tnt = Tnt()
+                tnt.rect.x = pos_x[i]
+                tnt.rect.y = pos_y[i]
+                tnt_list.add(tnt)
+            criminal_list.add(killer_list)
+            criminal_list.add(tnt_list)
+            criminal_list.add(bad_list)
+            criminal_list.add(stealer_list)
+            criminal_list.add(triangle_list)
+            criminal_list.add(drink_list)
+        if lvl == 8:
+            pos_x = [70,460]
+            pos_y = [400,400]
+            for i in range(2):
+                killer = Killer()
+                killer.rect.x = pos_x[i]
+                killer.rect.y = pos_y[i]
+                killer_list.add(killer)
+            pos_x = [710]
+            pos_y = [355]
+            for i in range(1):
+                triangle = Triangle()
+                triangle.rect.x = pos_x[i]
+                triangle.rect.y = pos_y[i]
+                triangle_list.add(triangle)
+            pos_x = [360]
+            pos_y = [410]
+            for i in range(1):
+                bad = Bad()
+                bad.rect.x = pos_x[i]
+                bad.rect.y = pos_y[i]
+                bad_list.add(bad)
+            pos_x = [370,680]
+            pos_y = [200,200]
+            for i in range(2):
+                scammer = Scammer()
+                scammer.rect.x = pos_x[i]
+                scammer.rect.y = pos_y[i]
+                scammer_list.add(scammer)
+            pos_x = [40,200,300,620,760]
+            pos_y = [290,200,540,355,430]
+            for i in range(5):
+                drink = Drink()
+                drink.rect.x = pos_x[i]
+                drink.rect.y = pos_y[i]
+                drink_list.add(drink)
+            pos_x = [30,200]
+            pos_y = [150,460]
+            for i in range(2):
+                tnt = Tnt()
+                tnt.rect.x = pos_x[i]
+                tnt.rect.y = pos_y[i]
+                tnt_list.add(tnt)
+            criminal_list.add(killer_list)
+            criminal_list.add(tnt_list)
+            criminal_list.add(bad_list)
+            criminal_list.add(scammer_list)
+            criminal_list.add(triangle_list)
+            criminal_list.add(drink_list)
+        if lvl == 9:
+            pos_x = [500]
+            pos_y = [460]
+            for i in range(1):
+                killer = Killer()
+                killer.rect.x = pos_x[i]
+                killer.rect.y = pos_y[i]
+                killer_list.add(killer)
+            pos_x = [40,130]
+            pos_y = [410,350]
+            for i in range(2):
+                bad = Bad()
+                bad.rect.x = pos_x[i]
+                bad.rect.y = pos_y[i]
+                bad_list.add(bad)
+            pos_x = [690]
+            pos_y = [350]
+            for i in range(1):
+                scammer = Scammer()
+                scammer.rect.x = pos_x[i]
+                scammer.rect.y = pos_y[i]
+                scammer_list.add(scammer)
+            pos_x = [40,320,480,400,755]
+            pos_y = [140,210,210,480,400]
+            for i in range(5):
+                drink = Drink()
+                drink.rect.x = pos_x[i]
+                drink.rect.y = pos_y[i]
+                drink_list.add(drink)
+            pos_x = [70,250,400,535]
+            pos_y = [150,250,250,250]
+            for i in range(4):
+                tnt = Tnt()
+                tnt.rect.x = pos_x[i]
+                tnt.rect.y = pos_y[i]
+                tnt_list.add(tnt)
+            pos_x = [150,650]
+            pos_y = [250,130]
+            for i in range(2):
+                stealer = Stealer()
+                stealer.rect.x = pos_x[i]
+                stealer.rect.y = pos_y[i]
+                stealer_list.add(stealer)
+            criminal_list.add(killer_list)
+            criminal_list.add(tnt_list)
+            criminal_list.add(bad_list)
+            criminal_list.add(scammer_list)
+            criminal_list.add(stealer_list)
+            criminal_list.add(drink_list)
+        if lvl == 10:
+            pos_x = [40,470]
+            pos_y = [450,400]
+            for i in range(2):
+                killer = Killer()
+                killer.rect.x = pos_x[i]
+                killer.rect.y = pos_y[i]
+                killer_list.add(killer)
+            pos_x = [90,190,680]
+            pos_y = [200,470,200]
+            for i in range(3):
+                triangle = Triangle()
+                triangle.rect.x = pos_x[i]
+                triangle.rect.y = pos_y[i]
+                triangle_list.add(triangle)
+            pos_x = [710]
+            pos_y = [410]
+            for i in range(1):
+                bad = Bad()
+                bad.rect.x = pos_x[i]
+                bad.rect.y = pos_y[i]
+                bad_list.add(bad)
+            pos_x = [50,120,470,550,730]
+            pos_y = [360,430,330,540,160]
+            for i in range(5):
+                scammer = Scammer()
+                scammer.rect.x = pos_x[i]
+                scammer.rect.y = pos_y[i]
+                scammer_list.add(scammer)
+            pos_x = [70,160,190]
+            pos_y = [140,170,230]
+            for i in range(3):
+                stealer = Stealer()
+                stealer.rect.x = pos_x[i]
+                stealer.rect.y = pos_y[i]
+                stealer_list.add(stealer)
+            criminal_list.add(killer_list)
+            criminal_list.add(bad_list)
+            criminal_list.add(scammer_list)
+            criminal_list.add(stealer_list)
+            criminal_list.add(triangle_list)
 
         return criminal_list
 
