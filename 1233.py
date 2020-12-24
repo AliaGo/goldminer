@@ -542,11 +542,11 @@ class Level():
 
 
 
-# 坦克手銬
-class Tank(pygame.sprite.Sprite):
+# 警車手銬
+class Policecar(pygame.sprite.Sprite):
     def __init__(self, width, height):
         super().__init__()
-        self.raw_image = pygame.image.load("tank.png").convert_alpha()
+        self.raw_image = pygame.image.load("policecar.png").convert_alpha()
         self.image = pygame.transform.scale(self.raw_image, (width, height))
         self.image = pygame.transform.rotate(self.image, -20)
         self.rect = self.image.get_rect()
@@ -560,9 +560,9 @@ class Tank(pygame.sprite.Sprite):
         for e in events:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
-                    self.groups()[0].add(Handcuff(self.rect.center, self.direction.normalize(), 20, 10))
+                    self.groups()[0].add(Handcuff(self.rect.center, self.direction.normalize(), 44, 16))
         self.angle = math.sin(angle) * 90
-        self.direction = pygame.Vector2(-4, 10000).rotate(-self.angle)
+        self.direction = pygame.Vector2(-0.25, 1).rotate(-self.angle)
         self.image = pygame.transform.rotate(self.org_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
@@ -879,6 +879,7 @@ def Gameover():
                 sys.exit()
         pygame.display.update()
 
+
 def select_word():
     word_list = [
         'apple',
@@ -904,27 +905,37 @@ def is_empty_word(word):
 def run_type():
     pygame.init()
     word = select_word()
+    counter, text = 10, '10'.rjust(0)
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 200)
     while True:
         screen.fill((255,255,255))
-        font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 200)
         sf_word = font.render(word, True, (0, 0, 0))
         center_x = screen.get_rect().width / 2 - sf_word.get_rect().width / 2
         screen.blit(sf_word, (center_x, 200))
-        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.USEREVENT:
+                counter -= 1
+                text = str(counter).rjust(0)
             if event.type == pygame.KEYDOWN:
                 if chr(event.key) == word[0]:
                     word = cut_head_char(word)
-                    pygame.display.update()
                     if is_empty_word(word):
-                        return  is_empty_word(word)
+                        return is_empty_word(word)
+            elif counter == 0:
+                return False
+        else:
+            screen.blit(font.render(text, True, (0, 0, 0)), (400, 0))
+            clock.tick(60)
+            pygame.display.flip()
+
 
 
 
 # 第一關
-sprites = pygame.sprite.Group(Tank(80, 80))
+sprites = pygame.sprite.Group(Policecar(31, 78))
 dt = 0
 criminal_list = Level.Criminal(now_level + 1)
 goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
@@ -965,10 +976,10 @@ while True:
         killed = {}
         sprites.update(events, dt, angle)
         sprites.draw(screen)
-        pygame.display.update()
         dt = clock.tick(60)
         screen.blit(font.render(text, True, (200, 255, 255)), (720, 10))
         pygame.display.flip()
+
         clock.tick(60)
         screen.fill((255, 255, 255))
         screen.blit(background, (0, 0))
@@ -978,34 +989,41 @@ while True:
         screen.blit(time_text, (650, 10))
         screen.blit(level_text, (650, 50))
         criminal_list.draw(screen)
-        pygame.display.flip()
         killed = pygame.sprite.groupcollide(sprites, criminal_list, dokilla=sprites, dokillb=criminal_list, collided=None)
         killed_list = list(killed.values())
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
-            run_type()
-            current_goal += 500
+            judge =run_type()
+            if judge:
+                current_goal += 500
         elif "Bad" in killedstr:
-            run_type()
-            current_goal += 250
+            judge = run_type()
+            if judge:
+                current_goal += 250
         elif "Scammer" in killedstr:
-            run_type()
-            current_goal += 100
+            judge = run_type()
+            if judge:
+                current_goal += 100
         elif "Stealer" in killedstr:
-            run_type()
-            current_goal += 50
+            judge = run_type()
+            if judge:
+                current_goal += 50
         elif "Drink" in killedstr:
-            run_type()
-            current_goal += 600
+            judge = run_type()
+            if judge:
+                current_goal += 600
         elif "Triangle" in killedstr:
-            run_type()
-            current_goal += 30
+            judge = run_type()
+            if judge:
+                current_goal += 30
         elif "Tnt" in killedstr:
-            run_type()
-            current_goal += 1
+            judge = run_type()
+            if judge:
+                current_goal += 1
         elif "Reporter" in killedstr:
-            run_type()
-            current_goal += 2
+            judge = run_type()
+            if judge:
+                current_goal += 2
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
         continue
     break
