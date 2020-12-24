@@ -144,7 +144,7 @@ def curr_goal(now_level):  # 目標業績頁面
     pygame.display.update()
 
 
-goal = [650, 1350, 2410, 3940, 6060, 9980]  # 目標業績
+goal = [750, 1750, 3210, 5610, 7845, 13500]  # 目標業績
 now_level = 0  # 現在關卡
 stop = ''
 # 事件迴圈監聽事件，進行事件處理(遊戲說明)
@@ -193,7 +193,7 @@ time_text = head_font.render('時間', True, (200, 255, 255))
 
 # 關卡
 level = []
-for i in range(1, 1000):
+for i in range(1, 10):
     level.append(int(i))
 
 pygame.display.flip()
@@ -216,7 +216,7 @@ class Bad(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('bad.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (60, 130))
+        self.image = pygame.transform.scale(self.image, (60, 110))
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
 
@@ -252,16 +252,7 @@ class Drink(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('drink.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (30, 38))
-        self.image.set_colorkey(ALPHA)
-        self.rect = self.image.get_rect()
-
-
-class Reporter(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('reporter.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (60, 130))
+        self.image = pygame.transform.scale(self.image, (25, 35))
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
 
@@ -270,7 +261,7 @@ class Tnt(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('tnt.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (60, 130))
+        self.image = pygame.transform.scale(self.image, (60, 80))
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
 
@@ -288,7 +279,6 @@ class Level():
         criminal_list = pygame.sprite.Group()
         bad_list = pygame.sprite.Group()
         tnt_list = pygame.sprite.Group()
-        reporter_list = pygame.sprite.Group()
         drink_list = pygame.sprite.Group()
         if lvl == 1:
             pos_x = [120, 650]
@@ -560,7 +550,7 @@ class Policecar(pygame.sprite.Sprite):
         for e in events:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
-                    self.groups()[0].add(Handcuff(self.rect.center, self.direction.normalize(), 44, 16))
+                    self.groups()[0].add(Handcuff(self.rect.center, self.direction.normalize(), 25, 15))
         self.angle = math.sin(angle) * 90
         self.direction = pygame.Vector2(-0.25, 1).rotate(-self.angle)
         self.image = pygame.transform.rotate(self.org_image, self.angle)
@@ -792,7 +782,7 @@ def Congrats():
             window_surface.blit(background, (0, 0))
             bet_button.render()
             passbuttom.render()
-            window_surface.blit(money, (550, 0))
+            window_surface.blit(money, (500, 0))
             if item_num == 2:
                 window_surface.blit(pricetag, (320, 100))
                 window_surface.blit(price1, (345, 105))
@@ -810,7 +800,7 @@ def Congrats():
                 item_tuple[1].render(text, messenger, (525, 150), (430, 50), notoSans_20, (41, 36, 33))
         else:  # 下注
             window_surface.blit(de_background, (0, 0))
-            window_surface.blit(money, (550, 0))
+            window_surface.blit(money, (450, 0))
             b2store_button.render()
             dec1_buttom.render()
             dec2_buttom.render()
@@ -935,7 +925,7 @@ def run_type():
 
 
 # 第一關
-sprites = pygame.sprite.Group(Policecar(31, 78))
+sprites = pygame.sprite.Group(Policecar(40, 50))
 dt = 0
 criminal_list = Level.Criminal(now_level + 1)
 goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
