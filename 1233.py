@@ -958,10 +958,10 @@ while True:
             if counter >= 0:
                 text = str(counter).rjust(3)
             else:
-                if current_goal <= goal[0]:  ############要修成 >= #######################
+                if current_goal >= goal[now_level]:  ############要修成 >= #######################
                     Congrats()
                     now_level += 1
-                    counter = 7  # 不知道為甚麼要多2
+                    counter = 32  # 不知道為甚麼要多2
                     criminal_list = Level.Criminal(lvl=now_level + 1)
                     goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
                     level_text = head_font.render('Level ' + str(level[now_level]), True, (200, 255, 255))
