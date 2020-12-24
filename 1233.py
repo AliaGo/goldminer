@@ -800,7 +800,7 @@ def Congrats():
                 item_tuple[1].render(text, messenger, (525, 150), (430, 50), notoSans_20, (41, 36, 33))
         else:  # 下注
             window_surface.blit(de_background, (0, 0))
-            window_surface.blit(money, (450, 0))
+            window_surface.blit(money, (375, 0))
             b2store_button.render()
             dec1_buttom.render()
             dec2_buttom.render()
@@ -986,34 +986,36 @@ while True:
             judge =run_type()
             if judge:
                 current_goal += 500
+                counter -= 4
         elif "Bad" in killedstr:
             judge = run_type()
             if judge:
                 current_goal += 250
+                counter -= 3
         elif "Scammer" in killedstr:
             judge = run_type()
             if judge:
                 current_goal += 100
+                counter -= 2
         elif "Stealer" in killedstr:
             judge = run_type()
             if judge:
                 current_goal += 50
+                counter -= 1
         elif "Drink" in killedstr:
             judge = run_type()
             if judge:
                 current_goal += 600
+                counter -= 5
         elif "Triangle" in killedstr:
             judge = run_type()
             if judge:
                 current_goal += 30
+                counter -= 4
         elif "Tnt" in killedstr:
             judge = run_type()
             if judge:
                 current_goal += 1
-        elif "Reporter" in killedstr:
-            judge = run_type()
-            if judge:
-                current_goal += 2
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
         continue
     break
