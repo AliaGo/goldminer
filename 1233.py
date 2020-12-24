@@ -1,3 +1,4 @@
+import pygame.freetype
 import sys
 import pygame
 import random
@@ -144,7 +145,7 @@ def curr_goal(now_level):  # 目標業績頁面
     pygame.display.update()
 
 
-goal = [750, 1350, 2510, 3510, 5045, 7500]  # 目標業績
+goal = [750, 1750, 3210, 5610, 7845, 13500]  # 目標業績
 now_level = 0  # 現在關卡
 stop = ''
 # 事件迴圈監聽事件，進行事件處理(遊戲說明)
@@ -531,7 +532,6 @@ class Level():
         return criminal_list
 
 
-
 # 警車手銬
 class Policecar(pygame.sprite.Sprite):
     def __init__(self, width, height):
@@ -578,10 +578,9 @@ class Handcuff(pygame.sprite.Sprite):
         # set the new position
         self.pos = next_pos
         self.rect.center = self.pos
-
-    def is_collided_with(self, sprite):
-        return self.rect.colliderect(sprite.rect)
-
+        self.angle += 40
+        self.image = pygame.transform.rotate(self.org_image, self.angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
 # 恭喜通關
 def Congrats():
@@ -872,25 +871,24 @@ def Gameover():
 
 def select_word():
     path = '7000.txt'
-    with open(path, 'r', encoding='ascii') as f1:
+    with open(path, 'r', encoding='UTF-8') as f1:
         word_list = []
         for w in f1.readlines():
             w = w.strip('\n ')
             word_list.append(str(w))
-        f1.close()
     num_of_elements = len(word_list)
     i = random.randint(0, num_of_elements - 1)
     return word_list[i]
 
 
+
 def select_sentence():
     path = '30_sentence.txt'
-    with open(path, 'r', encoding='utf-8') as f2:
+    with open(path, 'r', encoding='UTF-8') as f2:
         sentence_list = []
         for w in f2.readlines():
             w = w.strip('\n ')
-            sentence_list.append(w)
-        f2.close()
+            sentence_list.append(str(w))
     num_of_elements = len(sentence_list)
     i = random.randint(0, num_of_elements - 1)
     return sentence_list[i]
@@ -904,14 +902,14 @@ def is_empty_word(word):
     return not word
 
 
-def run_type_word():
+def run_type():
     pygame.init()
     word = select_word()
-    counter, text = 10, '10'.rjust(0)
+    counter, text = 5, '5'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
     while True:
-        screen.fill((255,255,255))
+        screen.fill((255, 255, 255))
         sf_word = font.render(word, True, (0, 0, 0))
         center_x = screen.get_rect().width / 2 - sf_word.get_rect().width / 2
         screen.blit(sf_word, (center_x, 200))
@@ -937,11 +935,12 @@ def run_type_word():
 def run_type_sentence():
     pygame.init()
     sentence = select_sentence()
-    counter, text = 25, '25'.rjust(0)
+    counter, text = 20, '20'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 15)
+    font2 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
     while True:
-        screen.fill((255,255,255))
+        screen.fill((255, 255, 255))
         sf_sentence = font.render(sentence, True, (0, 0, 0))
         center_x = screen.get_rect().width / 2 - sf_sentence.get_rect().width / 2
         screen.blit(sf_sentence, (center_x, 200))
@@ -959,16 +958,13 @@ def run_type_sentence():
             elif counter == 0:
                 return False
         else:
-            screen.blit(font.render(text, True, (0, 0, 0)), (400, 0))
+            screen.blit(font2.render(text, True, (0, 0, 0)), (400, 0))
             clock.tick(60)
             pygame.display.flip()
 
 
-
-
-
 # 第一關
-sprites = pygame.sprite.Group(Policecar(40, 70))
+sprites = pygame.sprite.Group(Policecar(32, 50))
 dt = 0
 criminal_list = Level.Criminal(now_level + 1)
 goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
@@ -1022,41 +1018,43 @@ while True:
         screen.blit(time_text, (650, 10))
         screen.blit(level_text, (650, 50))
         criminal_list.draw(screen)
-        killed = pygame.sprite.groupcollide(sprites, criminal_list, dokilla=sprites, dokillb=criminal_list, collided=None)
+        killed = pygame.sprite.groupcollide(sprites, criminal_list, dokilla=sprites, dokillb=criminal_list)
         killed_list = list(killed.values())
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
-            judge = run_type_word()
+            judge = run_type()
+            counter -= 4
             if judge:
                 current_goal += 500
-                counter -= 4
         elif "Bad" in killedstr:
-            judge = run_type_word()
+            judge = run_type()
+            counter -= 3
             if judge:
                 current_goal += 250
-                counter -= 3
         elif "Scammer" in killedstr:
-            judge = run_type_word()
+            judge = run_type()
+            counter -= 2
             if judge:
                 current_goal += 100
-                counter -= 2
         elif "Stealer" in killedstr:
-            judge = run_type_word()
+            judge = run_type()
+            counter -= 1
             if judge:
                 current_goal += 50
-                counter -= 1
         elif "Drink" in killedstr:
             judge = run_type_sentence()
+            counter -= 5
             if judge:
                 current_goal += 600
-                counter -= 1
         elif "Triangle" in killedstr:
             judge = run_type_sentence()
             if judge:
                 current_goal += 30
-                counter -= 3
+                counter -= 2
+            elif judge == False:
+                counter -= 5
         elif "Tnt" in killedstr:
-            judge = run_type_word()
+            judge = run_type()
             if judge:
                 current_goal += 1
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
