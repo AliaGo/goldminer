@@ -874,12 +874,24 @@ def select_word():
     path = '7000.txt'
     with open(path, 'r', encoding='ascii') as f1:
         word_list = []
-        for w in f1:
+        for w in f1.readlines():
+            w = w.strip('\n ')
             word_list.append(str(w))
+    num_of_elements = len(word_list)
+    i = random.randint(0, num_of_elements - 1)
+    return word_list[i]
 
-        num_of_elements = len(word_list)
-        i = random.randint(0, num_of_elements - 1)
-        return word_list[i]
+
+def select_sentence():
+    path = '30_sentence.txt'
+    with open(path, 'r', encoding='ascii') as f2:
+        sentence_list = []
+        for w in f2.readlines():
+            w = w.strip('\n ')
+            sentence_list.append(str(w))
+    num_of_elements = len(sentence_list)
+    i = random.randint(0, num_of_elements - 1)
+    return sentence_list[i]
 
 
 def cut_head_char(word):
@@ -890,12 +902,12 @@ def is_empty_word(word):
     return not word
 
 
-def run_type():
+def run_type_word():
     pygame.init()
     word = select_word()
     counter, text = 10, '10'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
-    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 200)
+    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
     while True:
         screen.fill((255,255,255))
         sf_word = font.render(word, True, (0, 0, 0))
@@ -918,6 +930,37 @@ def run_type():
             screen.blit(font.render(text, True, (0, 0, 0)), (400, 0))
             clock.tick(60)
             pygame.display.flip()
+
+
+def run_type_sentence():
+    pygame.init()
+    sentence = select_sentence()
+    counter, text = 10, '10'.rjust(0)
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
+    while True:
+        screen.fill((255,255,255))
+        sf_sentence = font.render(sentence, True, (0, 0, 0))
+        center_x = screen.get_rect().width / 2 - sf_word.get_rect().width / 2
+        screen.blit(sf_sentence, (center_x, 200))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.USEREVENT:
+                counter -= 1
+                text = str(counter).rjust(0)
+            if event.type == pygame.KEYDOWN:
+                if chr(event.key) == sentence[0]:
+                    sentence = cut_head_char(sentence)
+                    if is_empty_word(sentence):
+                        return is_empty_word(sentence)
+            elif counter == 0:
+                return False
+        else:
+            screen.blit(font.render(text, True, (0, 0, 0)), (400, 0))
+            clock.tick(60)
+            pygame.display.flip()
+
 
 
 
@@ -981,37 +1024,37 @@ while True:
         killed_list = list(killed.values())
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
-            judge =run_type()
+            judge = run_type_word()
             if judge:
                 current_goal += 500
                 counter -= 4
         elif "Bad" in killedstr:
-            judge = run_type()
+            judge = run_type_word()
             if judge:
                 current_goal += 250
                 counter -= 3
         elif "Scammer" in killedstr:
-            judge = run_type()
+            judge = run_type_word()
             if judge:
                 current_goal += 100
                 counter -= 2
         elif "Stealer" in killedstr:
-            judge = run_type()
+            judge = run_type_word()
             if judge:
                 current_goal += 50
                 counter -= 1
         elif "Drink" in killedstr:
-            judge = run_type()
+            judge = run_type_sentence()
             if judge:
                 current_goal += 600
                 counter -= 1
         elif "Triangle" in killedstr:
-            judge = run_type()
+            judge = run_type_sentence()
             if judge:
                 current_goal += 30
-                counter -= 4
+                counter -= 3
         elif "Tnt" in killedstr:
-            judge = run_type()
+            judge = run_type_word()
             if judge:
                 current_goal += 1
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
