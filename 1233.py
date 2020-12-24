@@ -1018,7 +1018,7 @@ while True:
         screen.blit(time_text, (650, 10))
         screen.blit(level_text, (650, 50))
         criminal_list.draw(screen)
-        killed = pygame.sprite.groupcollide(sprites, criminal_list, dokilla=sprites, dokillb=criminal_list)
+        killed = pygame.sprite.groupcollide(sprites, criminal_list, dokilla=sprites, dokillb=criminal_list, collided=pygame.sprite.collide_mask)
         killed_list = list(killed.values())
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
@@ -1050,7 +1050,7 @@ while True:
             judge = run_type_sentence()
             if judge:
                 current_goal += 30
-                counter -= 2
+                counter -= 1
             elif judge == False:
                 counter -= 5
         elif "Tnt" in killedstr:
