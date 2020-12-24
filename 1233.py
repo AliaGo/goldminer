@@ -877,6 +877,7 @@ def select_word():
         for w in f1.readlines():
             w = w.strip('\n ')
             word_list.append(str(w))
+        f1.close()
     num_of_elements = len(word_list)
     i = random.randint(0, num_of_elements - 1)
     return word_list[i]
@@ -884,11 +885,12 @@ def select_word():
 
 def select_sentence():
     path = '30_sentence.txt'
-    with open(path, 'r', encoding='ascii') as f2:
+    with open(path, 'r', encoding='utf-8') as f2:
         sentence_list = []
         for w in f2.readlines():
             w = w.strip('\n ')
-            sentence_list.append(str(w))
+            sentence_list.append(w)
+        f2.close()
     num_of_elements = len(sentence_list)
     i = random.randint(0, num_of_elements - 1)
     return sentence_list[i]
@@ -935,13 +937,13 @@ def run_type_word():
 def run_type_sentence():
     pygame.init()
     sentence = select_sentence()
-    counter, text = 10, '10'.rjust(0)
+    counter, text = 25, '25'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
-    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
+    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 15)
     while True:
         screen.fill((255,255,255))
         sf_sentence = font.render(sentence, True, (0, 0, 0))
-        center_x = screen.get_rect().width / 2 - sf_word.get_rect().width / 2
+        center_x = screen.get_rect().width / 2 - sf_sentence.get_rect().width / 2
         screen.blit(sf_sentence, (center_x, 200))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
