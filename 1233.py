@@ -1,6 +1,7 @@
 import sys
 import pygame
 import random
+import math
 from pygame.locals import *
 from sys import exit
 
@@ -608,15 +609,13 @@ class Tank(pygame.sprite.Sprite):
         self.direction = pygame.Vector2(1, 0)
         self.pos = pygame.Vector2(self.rect.center)
 
-    def update(self, events, dt):
+    def update(self, events, dt, angle):
         for e in events:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
                     self.groups()[0].add(Handcuff(self.rect.center, self.direction.normalize(), 20, 10))
-        
-        self.angle -= 3
-
-        self.direction = pygame.Vector2(1, 0).rotate(-self.angle)
+        self.angle = math.sin(angle) * 90
+        self.direction = pygame.Vector2(-4, 10000).rotate(-self.angle)
         self.image = pygame.transform.rotate(self.org_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
@@ -632,9 +631,9 @@ class Handcuff(pygame.sprite.Sprite):
         self.direction = direction
         self.pos = pygame.Vector2(self.rect.center)
         self.lives = 15
-        self.angle = 90
+        self.angle = 0
 
-    def update(self, events, dt):
+    def update(self, events, dt, angle):
 
         # where we would move next
         next_pos = self.pos + self.direction * dt
@@ -933,6 +932,49 @@ def Gameover():
                 sys.exit()
         pygame.display.update()
 
+def select_word():
+    word_list = [
+        'apple',
+        'banana',
+        'cherry',
+        'melon',
+        'orange'
+    ]
+
+    num_of_elements = len(word_list)
+    i = random.randint(0, num_of_elements - 1)
+    return word_list[i]
+
+
+def cut_head_char(word):
+    return word[1:]
+
+
+def is_empty_word(word):
+    return not word
+
+
+def run_type():
+    pygame.init()
+    word = select_word()
+    while True:
+        screen.fill((255,255,255))
+        font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 200)
+        sf_word = font.render(word, True, (0, 0, 0))
+        center_x = screen.get_rect().width / 2 - sf_word.get_rect().width / 2
+        screen.blit(sf_word, (center_x, 200))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if chr(event.key) == word[0]:
+                    word = cut_head_char(word)
+                    pygame.display.update()
+                    if is_empty_word(word):
+                        return  is_empty_word(word)
+
+
 
 # 第一關
 sprites = pygame.sprite.Group(Tank(80, 80))
@@ -946,10 +988,11 @@ counter, text = 30, '30'.rjust(3)
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
 
-
+angle = math.pi/-2
 
 while True:
     events = pygame.event.get()
+    angle += math.pi/100
     for e in events:
         if e.type == pygame.QUIT:
             sys.exit()
@@ -969,10 +1012,11 @@ while True:
                     # 更新資訊
                 else:
                     Gameover()
-        if e.type == pygame.QUIT: break
+        if e.type == pygame.QUIT:
+            break
     else:  # 遊戲畫面
         killed = {}
-        sprites.update(events, dt)
+        sprites.update(events, dt, angle)
         sprites.draw(screen)
         pygame.display.update()
         dt = clock.tick(60)
@@ -992,20 +1036,28 @@ while True:
         killed_list = list(killed.values())
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
+            run_type()
             current_goal += 500
         elif "Bad" in killedstr:
+            run_type()
             current_goal += 250
         elif "Scammer" in killedstr:
+            run_type()
             current_goal += 100
         elif "Stealer" in killedstr:
+            run_type()
             current_goal += 50
         elif "Drink" in killedstr:
+            run_type()
             current_goal += 600
         elif "Triangle" in killedstr:
+            run_type()
             current_goal += 30
         elif "Tnt" in killedstr:
+            run_type()
             current_goal += 1
         elif "Reporter" in killedstr:
+            run_type()
             current_goal += 2
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
         continue
