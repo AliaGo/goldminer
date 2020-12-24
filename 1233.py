@@ -144,7 +144,7 @@ def curr_goal(now_level):  # 目標業績頁面
     pygame.display.update()
 
 
-goal = [750, 1750, 3210, 5610, 7845, 13500]  # 目標業績
+goal = [750, 1350, 2510, 3510, 5045, 7500]  # 目標業績
 now_level = 0  # 現在關卡
 stop = ''
 # 事件迴圈監聽事件，進行事件處理(遊戲說明)
@@ -871,17 +871,15 @@ def Gameover():
 
 
 def select_word():
-    word_list = [
-        'apple',
-        'banana',
-        'cherry',
-        'melon',
-        'orange'
-    ]
+    path = '7000.txt'
+    with open(path, 'r', encoding='ascii') as f1:
+        word_list = []
+        for w in f1:
+            word_list.append(str(w))
 
-    num_of_elements = len(word_list)
-    i = random.randint(0, num_of_elements - 1)
-    return word_list[i]
+        num_of_elements = len(word_list)
+        i = random.randint(0, num_of_elements - 1)
+        return word_list[i]
 
 
 def cut_head_char(word):
@@ -925,7 +923,7 @@ def run_type():
 
 
 # 第一關
-sprites = pygame.sprite.Group(Policecar(40, 50))
+sprites = pygame.sprite.Group(Policecar(40, 70))
 dt = 0
 criminal_list = Level.Criminal(now_level + 1)
 goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
@@ -1006,7 +1004,7 @@ while True:
             judge = run_type()
             if judge:
                 current_goal += 600
-                counter -= 5
+                counter -= 1
         elif "Triangle" in killedstr:
             judge = run_type()
             if judge:
