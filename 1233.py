@@ -1210,7 +1210,7 @@ while True:
         killed_list = list(killed.values())
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
-            judge = run_type()
+            judge = run_type_sentence()
             counter -= 4
             if judge:
                 current_goal += 500
@@ -1231,7 +1231,7 @@ while True:
                 current_goal += 50
         elif "Drink" in killedstr:
             judge = run_type_sentence()
-            counter -= 5
+            counter -= 4
             if judge:
                 current_goal += 600
         elif "Triangle" in killedstr:
