@@ -6,7 +6,7 @@ import math
 from pygame.locals import *
 from sys import exit
 
-# 初始化
+# 初始化  
 pygame.init()
 # 建立 window 視窗畫布，大小為 800x600
 screen = pygame.display.set_mode((800, 600))
@@ -1123,9 +1123,9 @@ def run_type():
 def run_type_sentence():
     pygame.init()
     sentence = select_sentence()
-    counter, text = 20, '20'.rjust(0)
+    counter, text = 13, '13'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
-    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 15)
+    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 35)
     font2 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
     while True:
         screen.fill((255, 255, 255))
