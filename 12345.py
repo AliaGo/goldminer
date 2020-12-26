@@ -780,11 +780,24 @@ dec3_switch = False
 dec4_switch = False
 
 # 恭喜通關
-def Congrats():
+def Congrats(): 
+    global boom_switch 
+    global clock_switch 
+    global donut_switch 
+    global remove_switch
     global dec1_switch
     global dec2_switch
     global dec3_switch
     global dec4_switch
+    boom_switch = False
+    clock_switch = False
+    donut_switch = False
+    remove_switch = False
+    dec1_switch = False
+    dec2_switch = False
+    dec3_switch = False
+    dec4_switch = False
+    
     window_surface = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('警察抓犯人')  # 命名
     background = pygame.image.load('achieve.png').convert_alpha()  # 背景
@@ -977,11 +990,11 @@ def Congrats():
     # 博士要說的話
     def whichitem(item):
         if item == boom:
-            text = '炸掉手銬上不想通\n緝的人物或物品，\n可節省時間抓其他\n犯人。'
+            text = '按方向鍵上↑可炸\n掉手銬上不想通緝\n的人物或物品，可\n節省時間抓其他犯\n人。'
         elif item == clock:
-            text = '時間暫停。'
+            text = '總時間變為兩倍。'
         elif item == donut:
-            text = '加快抓到犯人的速\n度。'
+            text = '將所有句子變成單\n子，加快抓到犯人\n的速度。'
         elif item == remove:
             text = '拆除地圖上的TNT。'
         return text
@@ -1027,6 +1040,7 @@ def Congrats():
                 text = whichitem(item_tuple[0])
                 item_tuple[1].render(text, messenger, (525, 150), (430, 50), notoSans_20, (41, 36, 33))
         else:  # 下注
+            money = notoSans_40.render('現有資金: $' + str(current_goal), True, (255, 250, 250))
             window_surface.blit(de_background, (0, 0))
             window_surface.blit(money, (375, 0))
             b2store_button.render()
@@ -1296,19 +1310,15 @@ while True:
                     possibility = random.randint(1, 100)
                     if dec1_switch == True and possibility <= 40:
                         current_goal = goal[now_level]
-                        dec1_switch = False
                         continue
                     if dec2_switch == True and possibility <= 50:
                         current_goal = goal[now_level]
-                        dec2_switch = False
                         continue    
                     if dec3_switch == True and possibility <= 60:
                         current_goal = goal[now_level]
-                        dec3_switch = False
                         continue
                     if dec4_switch == True and possibility <= 70:
                         current_goal = goal[now_level]
-                        dec4_switch = False
                         continue
                     Gameover()
         if e.type == pygame.QUIT:
