@@ -781,14 +781,10 @@ dec4_switch = False
 
 # 恭喜通關
 def Congrats():
-    boom_switch = False
-    clock_switch = False
-    donut_switch = False
-    remove_switch = False
-    dec1_switch = False
-    dec2_switch = False
-    dec3_switch = False
-    dec4_switch = False
+    global dec1_switch
+    global dec2_switch
+    global dec3_switch
+    global dec4_switch
     window_surface = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('警察抓犯人')  # 命名
     background = pygame.image.load('achieve.png').convert_alpha()  # 背景
@@ -921,10 +917,10 @@ def Congrats():
     dec4_buttom = Button(dec4, dec4_pressed, (560, 150), dec4_scale)
 
     # 建偵探字
-    d1_text = '成功機率巴'
-    d2_text = '成功機率巴拉'
-    d3_text = '成功機率巴拉拉'
-    d4_text = '成功機率巴拉拉拉'
+    d1_text = '一位破案機率40%的名偵探'
+    d2_text = '一位破案機率50%的名偵探'
+    d3_text = '一位破案機率60%的名偵探'
+    d4_text = '一位破案機率70%的名偵探'
 
     # 建偵探字tuple
     decs_text_tuple = [(dec1_buttom, d1_text), (dec2_buttom, d2_text), (dec3_buttom, d3_text), (dec4_buttom, d4_text)]
@@ -1043,12 +1039,12 @@ def Congrats():
             window_surface.blit(g_pricetag, (400, 350))
             window_surface.blit(g_pricetag, (550, 350))
             window_surface.blit(g_messenger, (100, 400))
-            window_surface.blit(d1_price, (100, 350))
-            window_surface.blit(d2_price, (265, 350))
-            window_surface.blit(d3_price, (410, 350))
-            window_surface.blit(d4_price, (565, 350))
+            window_surface.blit(d1_price, (125,365))
+            window_surface.blit(d2_price, (290,365))
+            window_surface.blit(d3_price, (445,365))
+            window_surface.blit(d4_price, (590,365))
             for currentdec in decs_text_tuple:
-                currentdec[0].render(text=currentdec[1], text_position=(130, 430), fontsize=notoSans_40,
+                currentdec[0].render(text=currentdec[1], text_position=(150, 430), fontsize=notoSans_40,
                                      color=(255, 250, 250))
         if '2' in stop:
             stop = []
@@ -1119,16 +1115,16 @@ def Congrats():
                         item = item_buttom3.itemtype()
                         turnswitchon(item)
                         current_goal -= pricenum3
-                if dec1_buttom.isOver() and push == 6 and current_goal >= 500:
+                if dec1_buttom.isOver() and current_goal >= 500:
                     dec1_switch = True
                     current_goal -= 500
-                elif dec2_buttom.isOver() and push == 7 and current_goal >= 700:
+                elif dec2_buttom.isOver() and current_goal >= 700:
                     dec2_switch = True
                     current_goal -= 700
-                elif dec3_buttom.isOver() and push == 8 and current_goal >= 900:
+                elif dec3_buttom.isOver() and current_goal >= 900:
                     dec3_switch = True
                     current_goal -= 900
-                elif dec4_buttom.isOver() and push == 9 and current_goal >= 1100:
+                elif dec4_buttom.isOver() and current_goal >= 1100:
                     dec4_switch = True
                     current_goal -= 1100
                             
@@ -1297,6 +1293,23 @@ while True:
                     curr_goal(now_level)
                     # 更新資訊
                 else:
+                    possibility = random.randint(1, 100)
+                    if dec1_switch == True and possibility <= 40:
+                        current_goal = goal[now_level]
+                        dec1_switch = False
+                        continue
+                    if dec2_switch == True and possibility <= 50:
+                        current_goal = goal[now_level]
+                        dec2_switch = False
+                        continue    
+                    if dec3_switch == True and possibility <= 60:
+                        current_goal = goal[now_level]
+                        dec3_switch = False
+                        continue
+                    if dec4_switch == True and possibility <= 70:
+                        current_goal = goal[now_level]
+                        dec4_switch = False
+                        continue
                     Gameover()
         if e.type == pygame.QUIT:
             break
@@ -1352,7 +1365,10 @@ while True:
             if judge:
                 current_goal += 600
         elif "Triangle" in killedstr:
-            judge = run_type_sentence()
+            if donut_switch == True:
+                judge = run_type()
+            else:
+                judge = run_type_sentence()
             if judge:
                 current_goal += 30
                 counter -= 1
