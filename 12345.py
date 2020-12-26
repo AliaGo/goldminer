@@ -778,15 +778,15 @@ dec1_switch = False
 dec2_switch = False
 dec3_switch = False
 dec4_switch = False
-
 # 恭喜通關
 def Congrats():
-    global dec1_switch
-    global dec2_switch
-    global dec3_switch
-    global dec4_switch
+    global boom_switch 
+    global clock_switch 
+    global donut_switch 
+    global remove_switch
     window_surface = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('警察抓犯人')  # 命名
+
     background = pygame.image.load('achieve.png').convert_alpha()  # 背景
     background = pygame.transform.scale(background, (800, 600))
     window_surface.blit(background, (0, 0))
@@ -824,7 +824,6 @@ def Congrats():
             self.imageDown = pygame.image.load(downimage).convert_alpha()
             self.imageDown = pygame.transform.scale(self.imageDown, scale)
             self.position = position
-            self.upimage = upimage
 
         def isOver(self):
             point_x, point_y = pygame.mouse.get_pos()
@@ -848,16 +847,15 @@ def Congrats():
                     blitText(text, text_position, 25, fontsize, color)
             else:
                 window_surface.blit(self.imageUp, (x, y))
-        def itemtype(self):
-            if self.upimage == 'boom.png':
-                item = 'boom'
-            elif self.upimage == 'clock.png':
-                item = 'clock'
-            elif self.upimage == 'donut.png':
-                item = 'donut'
-            elif self.upimage == 'remove.png':
-                item = 'remove'    
-            return item
+        def itemtype(self, upimage):
+            if upimage == 'boom.png':
+                return 'boom'
+            elif upimage == 'clock.png':
+                return 'clock'
+            elif upimage == 'donut.png':
+                return 'donut'
+            elif upimage == 'remove.png':
+                return 'remove'    
     # 叫按鍵
     bet = 'bet.png'
     bet_pressed = 'bet1.png'
@@ -933,10 +931,10 @@ def Congrats():
 
     # 產生隨機價錢
     def randomprice():
-        price_num = random.randint(1, 500)
-        randomprice = '$' + str(price_num)
+        k1 = random.randint(1, 500)
+        randomprice = '$' + str(k1)
         price = notoSans_40.render(randomprice, True, (255, 245, 238))
-        return price_num, price
+        return price
 
     # 建現在資金
     global current_goal
@@ -959,18 +957,18 @@ def Congrats():
         if i == 0:
             item1 = item[0]
             item_buttom1 = Button(item[0], item[1], (200, 100), item[2])
-            pricenum1, price1 = randomprice()
+            price1 = randomprice()
             currentitems[0] = (item1, item_buttom1)
         elif i == 1:
             item2 = item[0]
             item_buttom2 = Button(item[0], item[1], (200, 230), item[2])
-            pricenum2, price2 = randomprice()
+            price2 = randomprice()
             currentitems[1] = (item2, item_buttom2)
             item_num = 2
         elif i == 2:
             item3 = item[0]
             item_buttom3 = Button(item[0], item[1], (200, 380), item[2])
-            pricenum3, price3 = randomprice()
+            price3 = randomprice()
             currentitems[2] = (item3, item_buttom3)
             item_num = 3
 
@@ -989,10 +987,6 @@ def Congrats():
 
     
     def turnswitchon(item):
-        global boom_switch
-        global clock_switch
-        global donut_switch
-        global remove_switch
         if item == 'boom':
             boom_switch = True
         elif item == 'clock':
@@ -1006,7 +1000,6 @@ def Congrats():
     # 事件迴圈監聽事件，進行事件處理
     while True:
         if '1' not in stop:  # 商店
-            money = notoSans_40.render('現有資金: $' + str(current_goal), True, (255, 250, 250))
             window_surface.blit(background, (0, 0))
             bet_button.render()
             passbuttom.render()
@@ -1094,41 +1087,41 @@ def Congrats():
                     if push == 2:
                         stop.append('2')
                 if item_num == 2:
-                    if item_buttom1.isOver() is True  and current_goal >= pricenum1:
-                        item = item_buttom1.itemtype()
+                    if item_buttom1.isOver() is True and push == 3 and current_goal >= price1:
+                        item = item_buttom1.itemtype
                         turnswitchon(item)
-                        current_goal -= pricenum1
-                    elif item_buttom2.isOver() is True  and current_goal >= pricenum2:
-                        item = item_buttom2.itemtype()
+                        current_goal -= price1
+                    elif item_buttom2.isOver() is True and push == 4 and current_goal >= price2:
+                        item = item_buttom2.itemtype
                         turnswitchon(item)
-                        current_goal -= pricenum2
+                        current_goal -= price2
                 if item_num == 3:
-                    if item_buttom1.isOver() is True  and current_goal >= pricenum1:
-                        item = item_buttom1.itemtype()
+                    if item_buttom1.isOver() is True and push == 3 and current_goal >= price1:
+                        item = item_buttom1.itemtype
                         turnswitchon(item)
-                        current_goal -= pricenum1
-                    elif item_buttom2.isOver() is True  and current_goal >= pricenum2:
-                        item = item_buttom2.itemtype()
+                        current_goal -= price1
+                    elif item_buttom2.isOver() is True and push == 4 and current_goal >= price2:
+                        item = item_buttom2.itemtype
                         turnswitchon(item)
-                        current_goal -= pricenum2                      
-                    elif item_buttom3.isOver() is True  and current_goal >= pricenum3:
-                        item = item_buttom3.itemtype()
+                        current_goal -= price2
+                    elif item_buttom3.isOver() is True and push == 5 and current_goal >= price3:
+                        item = item_buttom3.itemtype
                         turnswitchon(item)
-                        current_goal -= pricenum3
-                if dec1_buttom.isOver() and current_goal >= 500:
+                        current_goal -= price3
+                if dec1_buttom.isOver() and push == 6 and current_goal >= 500:
                     dec1_switch = True
                     current_goal -= 500
-                elif dec2_buttom.isOver() and current_goal >= 700:
+                elif dec2_buttom.isOver() and push == 7 and current_goal >= 700:
                     dec2_switch = True
                     current_goal -= 700
-                elif dec3_buttom.isOver() and current_goal >= 900:
+                elif dec3_buttom.isOver() and push == 8 and current_goal >= 900:
                     dec3_switch = True
                     current_goal -= 900
-                elif dec4_buttom.isOver() and current_goal >= 1100:
+                elif dec4_buttom.isOver() and push == 9 and current_goal >= 1100:
                     dec4_switch = True
                     current_goal -= 1100
-                            
         pygame.display.update()
+
 
 
 # 遊戲結束
@@ -1185,7 +1178,6 @@ def is_empty_word(word):
 
 
 def run_type():
-    global boom_switch
     pygame.init()
     word = select_word()
     counter, text = 5, '5'.rjust(0)
@@ -1204,7 +1196,6 @@ def run_type():
                 text = str(counter).rjust(0)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and boom_switch == True:
-                    boom_switch = False
                     return False
                 elif chr(event.key) == word[0]:
                     word = cut_head_char(word)
@@ -1220,7 +1211,6 @@ def run_type():
 
 
 def run_type_sentence():
-    global boom_switch
     pygame.init()
     sentence = select_sentence()
     counter, text = 20, '20'.rjust(0)
@@ -1240,7 +1230,6 @@ def run_type_sentence():
                 text = str(counter).rjust(0)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and boom_switch == True:
-                    boom_switch = False
                     return False 
                 elif chr(event.key) == sentence[0]:
                     sentence = cut_head_char(sentence)
@@ -1293,23 +1282,6 @@ while True:
                     curr_goal(now_level)
                     # 更新資訊
                 else:
-                    possibility = random.randint(1, 100)
-                    if dec1_switch == True and possibility <= 40:
-                        current_goal = goal[now_level]
-                        dec1_switch = False
-                        continue
-                    if dec2_switch == True and possibility <= 50:
-                        current_goal = goal[now_level]
-                        dec2_switch = False
-                        continue    
-                    if dec3_switch == True and possibility <= 60:
-                        current_goal = goal[now_level]
-                        dec3_switch = False
-                        continue
-                    if dec4_switch == True and possibility <= 70:
-                        current_goal = goal[now_level]
-                        dec4_switch = False
-                        continue
                     Gameover()
         if e.type == pygame.QUIT:
             break
@@ -1335,7 +1307,7 @@ while True:
         killedstr = "".join('%s' %id for id in killed_list)
         if "Killer" in killedstr:
             if donut_switch == True:
-                judge = run_type()
+                judge = run_type
             else:
                 judge = run_type_sentence()
             counter -= 4
@@ -1365,10 +1337,7 @@ while True:
             if judge:
                 current_goal += 600
         elif "Triangle" in killedstr:
-            if donut_switch == True:
-                judge = run_type()
-            else:
-                judge = run_type_sentence()
+            judge = run_type_sentence()
             if judge:
                 current_goal += 30
                 counter -= 1
