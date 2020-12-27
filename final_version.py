@@ -37,13 +37,14 @@ pygame.mixer.music.set_volume(0.7)  # 設音量
 pygame.mixer.music.play(-1)
 
 
+
 # 宣告按鈕
 class Button(object):
     def __init__(self, upimage, downimage, position):
         self.imageUp = pygame.image.load(upimage).convert_alpha()
-        self.imageUp = pygame.transform.scale(self.imageUp, (200, 70))
+        self.imageUp = pygame.transform.scale(self.imageUp, (250, 100))
         self.imageDown = pygame.image.load(downimage).convert_alpha()
-        self.imageDown = pygame.transform.scale(self.imageDown, (200, 70))
+        self.imageDown = pygame.transform.scale(self.imageDown, (250, 100))
         self.position = position
 
     def isOver(self):  # 若按鈕位置重疊 兩個按鈕都會計算
@@ -63,14 +64,15 @@ class Button(object):
             screen.blit(self.imageDown, (x - w / 2, y - h / 2))
         else:
             screen.blit(self.imageUp, (x - w / 2, y - h / 2))
+
 
 # 退出本關的按鈕
 class Button_exit(object):
     def __init__(self, upimage, downimage, position):
         self.imageUp = pygame.image.load(upimage).convert_alpha()
-        self.imageUp = pygame.transform.scale(self.imageUp, (80, 80))
+        self.imageUp = pygame.transform.scale(self.imageUp, (60, 60))
         self.imageDown = pygame.image.load(downimage).convert_alpha()
-        self.imageDown = pygame.transform.scale(self.imageDown, (80, 80))
+        self.imageDown = pygame.transform.scale(self.imageDown, (60, 60))
         self.position = position
 
     def isOver(self):  # 若按鈕位置重疊 兩個按鈕都會計算
@@ -90,7 +92,6 @@ class Button_exit(object):
             screen.blit(self.imageDown, (x - w / 2, y - h / 2))
         else:
             screen.blit(self.imageUp, (x - w / 2, y - h / 2))
-
 
 # start按鈕
 upImageFilename = 'start.png'
@@ -178,7 +179,6 @@ background2 = pygame.transform.scale(background2, (800, 600))
 
 # 更新畫面，等所有操作完成後一次更新（若沒更新，則元素不會出現）
 pygame.display.update()
-
 
 stop = ''
 # 事件迴圈監聽事件，進行事件處理
@@ -291,7 +291,7 @@ time_text = head_font.render('時間', True, (200, 255, 255))
 # 提早退出關卡
 upImageFilename = 'exit.png'
 downImageFilename = 'exit light.png'
-button3 = Button_exit(upImageFilename, downImageFilename, (580, 50))
+button3 = Button_exit(upImageFilename, downImageFilename, (600, 50))
 
 # 關卡
 level = []
@@ -366,6 +366,7 @@ class Tnt(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (60, 80))
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
+
 
 ALPHA = (0, 0, 0)
 
@@ -976,7 +977,6 @@ def Congrats():
                 item = 'remove'
             return item
 
-
     # 叫按鍵
     bet = 'bet.png'
     bet_pressed = 'bet1.png'
@@ -1041,7 +1041,8 @@ def Congrats():
     d4_text = '一位破案機率70%的名偵探'
 
     # 建偵探字tuple
-    decs_text_tuple = [(dec1, dec1_buttom, d1_text), (dec2, dec2_buttom, d2_text), (dec3, dec3_buttom, d3_text), (dec4, dec4_buttom, d4_text)]
+    decs_text_tuple = [(dec1, dec1_buttom, d1_text), (dec2, dec2_buttom, d2_text), (dec3, dec3_buttom, d3_text),
+                       (dec4, dec4_buttom, d4_text)]
 
     # 叫價錢版
     pricetag = pygame.image.load('price2.png')
@@ -1118,7 +1119,7 @@ def Congrats():
             clock_switch = True
             for item_tuple in currentitems:
                 if item_tuple[0] == clock:
-                    currentitems.remove(item_tuple)      
+                    currentitems.remove(item_tuple)
         elif item == 'donut':
             donut_switch = True
             for item_tuple in currentitems:
@@ -1129,7 +1130,7 @@ def Congrats():
             for item_tuple in currentitems:
                 if item_tuple[0] == remove:
                     currentitems.remove(item_tuple)
-    
+
     def switchonornot(item):
         global boom_switch
         global clock_switch
@@ -1143,7 +1144,7 @@ def Congrats():
             return donut_switch
         if item == 'remove':
             return remove_switch
-        
+
     stop = []
     # 事件迴圈監聽事件，進行事件處理
     while True:
@@ -1169,7 +1170,7 @@ def Congrats():
                 for item_tuple in currentitems:
                     text = whichitem(item_tuple[0])
                     item_tuple[1].render(text, messenger, (525, 150), (430, 50), notoSans_20, (41, 36, 33))
-                
+
         else:  # 下注
             money = notoSans_40.render('現有資金: $' + str(current_goal), True, (255, 250, 250))
             window_surface.blit(de_background, (0, 0))
@@ -1188,7 +1189,7 @@ def Congrats():
                 for currentdec in decs_text_tuple:
                     text = currentdec[2]
                     currentdec[1].render(text, text_position=(150, 430), fontsize=notoSans_40,
-                                        color=(255, 250, 250))
+                                         color=(255, 250, 250))
         if '2' in stop:
             stop = []
             break
@@ -1227,6 +1228,7 @@ def Congrats():
                     push = 9
             # 如果釋放滑鼠按鈕
             elif event.type == pygame.MOUSEBUTTONUP:
+                check = pygame.mixer.Sound('check.mp3')
                 if bet_button.isOver() is True:
                     if push == 0:
                         stop.append('1')
@@ -1237,55 +1239,64 @@ def Congrats():
                     if push == 2:
                         stop.append('2')
                 if item_num == 2:
-                    if item_buttom1.isOver() is True and current_goal >= pricenum1:
+                    if item_buttom1.isOver() is True and current_goal >= pricenum1 and '1' not in stop:
+                        check.play()
                         item = item_buttom1.itemtype()
                         if switchonornot(item) != True:
                             turnswitchon(item)
                             current_goal -= pricenum1
 
-                    elif item_buttom2.isOver() is True and current_goal >= pricenum2:
+                    elif item_buttom2.isOver() is True and current_goal >= pricenum2 and '1' not in stop:
+                        check.play()
                         item = item_buttom2.itemtype()
                         if switchonornot(item) != True:
                             turnswitchon(item)
                             current_goal -= pricenum2
                 if item_num == 3:
-                    if item_buttom1.isOver() is True and current_goal >= pricenum1:
+                    if item_buttom1.isOver() is True and current_goal >= pricenum1 and '1' not in stop:
+                        check.play()
                         item = item_buttom1.itemtype()
                         if switchonornot(item) != True:
                             turnswitchon(item)
                             current_goal -= pricenum1
-                    elif item_buttom2.isOver() is True and current_goal >= pricenum2:
+                    elif item_buttom2.isOver() is True and current_goal >= pricenum2 and '1' not in stop:
+                        check.play()
                         item = item_buttom2.itemtype()
                         if switchonornot(item) != True:
                             turnswitchon(item)
                             current_goal -= pricenum2
-                    elif item_buttom3.isOver() is True and current_goal >= pricenum3:
+                    elif item_buttom3.isOver() is True and current_goal >= pricenum3 and '1' not in stop:
+                        check.play()
                         item = item_buttom3.itemtype()
                         if switchonornot(item) != True:
                             turnswitchon(item)
                             current_goal -= pricenum3
-                if dec1_buttom.isOver() and current_goal >= 500:
+                if dec1_buttom.isOver() and current_goal >= 500 and '1' in stop:
+                    check.play()
                     if dec1_switch != True:
                         dec1_switch = True
                         for currentdec in decs_text_tuple:
                             if currentdec[0] == dec1:
                                 decs_text_tuple.remove(currentdec)
                         current_goal -= 500
-                elif dec2_buttom.isOver() and current_goal >= 700:
+                elif dec2_buttom.isOver() and current_goal >= 700 and '1' in stop:
+                    check.play()
                     if dec2_switch != True:
                         dec2_switch = True
                         for currentdec in decs_text_tuple:
                             if currentdec[0] == dec2:
                                 decs_text_tuple.remove(currentdec)
                         current_goal -= 700
-                elif dec3_buttom.isOver() and current_goal >= 900:
+                elif dec3_buttom.isOver() and current_goal >= 900 and '1' in stop:
+                    check.play()
                     if dec3_switch != True:
                         dec3_switch = True
                         for currentdec in decs_text_tuple:
                             if currentdec[0] == dec3:
                                 decs_text_tuple.remove(currentdec)
                         current_goal -= 900
-                elif dec4_buttom.isOver() and current_goal >= 1100:
+                elif dec4_buttom.isOver() and current_goal >= 1100 and '1' in stop:
+                    check.play()
                     if dec4_switch != True:
                         dec4_switch = True
                         for currentdec in decs_text_tuple:
@@ -1347,9 +1358,12 @@ def cut_head_char(word):
 def is_empty_word(word):
     return not word
 
+freeze_sound = pygame.mixer.Sound('Freeze.mp3')
+arrest_sound = pygame.mixer.Sound('super-mario-coin-sound.mp3')
 
 def run_type(catch_item='hi'):
     global boom_switch
+    freeze_sound.play()
     pygame.init()
     word = select_word()
     counter, text = 5, '5'.rjust(0)
@@ -1376,19 +1390,21 @@ def run_type(catch_item='hi'):
                 elif event.unicode == word[0]:
                     word = cut_head_char(word)
                     if is_empty_word(word):
+                        arrest_sound.play()
                         return is_empty_word(word)
 
             elif counter == 0:
                 return False
         else:
             screen.blit(font.render(text, True, (0, 0, 0)), (400, 0))
-            screen.blit(item_text, (0,0))
+            screen.blit(item_text, (0, 0))
             clock.tick(60)
             pygame.display.flip()
 
 
 def run_type_sentence(catch_item='hi'):
     global boom_switch
+    freeze_sound.play()
     pygame.init()
     sentence = select_sentence()
     counter, text = 13, '13'.rjust(0)
@@ -1415,6 +1431,7 @@ def run_type_sentence(catch_item='hi'):
                 elif event.unicode == sentence[0]:
                     sentence = cut_head_char(sentence)
                     if is_empty_word(sentence):
+                        arrest_sound.play()
                         return is_empty_word(sentence)
 
             elif counter == 0:
@@ -1453,32 +1470,9 @@ class Explosion(pygame.sprite.Sprite):
 
     def update(self, events, dt, angle):
         now = pygame.time.get_ticks()
-        if now - self.last_update > self.frame_rate:
-            self.last_update = now
-            self.frame += 1
-            if self.frame == len(explosion_anim[self.size]):
-                self.kill()
-            else:
-                center = self.rect.center
-                self.image = explosion_anim[self.size][self.frame]
-                self.rect = self.image.get_rect()
-                self.rect.center = center
-
-
-# 道具炸彈爆炸特效
-class Explosion2(pygame.sprite.Sprite):
-    def __init__(self, center, size):
-        pygame.sprite.Sprite.__init__(self)
-        self.size = size
-        self.image = explosion_anim[self.size][0]
-        self.rect = self.image.get_rect()
-        self.rect.center = center
-        self.frame = 0
-        self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 50
-
-    def update(self, events, dt, angle):
-        now = pygame.time.get_ticks()
+        explode_sound = pygame.mixer.Sound('explode.mp3')
+        explode_sound.set_volume(0.3)
+        explode_sound.play()
         if now - self.last_update > self.frame_rate:
             self.last_update = now
             self.frame += 1
@@ -1675,17 +1669,19 @@ while True:
     break
 
 # 10關全部破關
+pygame.mixer.music.stop
+pygame.mixer.music.load('promote.mp3')
+pygame.mixer.music.set_volume(0.7)  # 設音量
+pygame.mixer.music.play(0)
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('finish')  # 命名
 
-
 background = pygame.image.load('—Pngtree—cartoon superhero policeman with red_1161365.png').convert_alpha()  # 背景
 background = pygame.transform.scale(background, (800, 600))
-screen.blit(background,(0, 0))
+screen.blit(background, (0, 0))
 
 pygame.display.update()
-
 
 while True:
     for event in pygame.event.get():
