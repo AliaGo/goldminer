@@ -41,9 +41,36 @@ pygame.mixer.music.play(-1)
 class Button(object):
     def __init__(self, upimage, downimage, position):
         self.imageUp = pygame.image.load(upimage).convert_alpha()
-        self.imageUp = pygame.transform.scale(self.imageUp, (250, 100))
+        self.imageUp = pygame.transform.scale(self.imageUp, (200, 70))
         self.imageDown = pygame.image.load(downimage).convert_alpha()
-        self.imageDown = pygame.transform.scale(self.imageDown, (250, 100))
+        self.imageDown = pygame.transform.scale(self.imageDown, (200, 70))
+        self.position = position
+
+    def isOver(self):  # 若按鈕位置重疊 兩個按鈕都會計算
+        point_x, point_y = pygame.mouse.get_pos()
+        x, y = self.position
+        w, h = self.imageUp.get_size()
+
+        in_x = x - w / 2 < point_x < x + w / 2
+        in_y = y - h / 2 < point_y < y + h / 2
+        return in_x and in_y
+
+    def render(self):  # 畫
+        w, h = self.imageUp.get_size()
+        x, y = self.position
+
+        if self.isOver():
+            screen.blit(self.imageDown, (x - w / 2, y - h / 2))
+        else:
+            screen.blit(self.imageUp, (x - w / 2, y - h / 2))
+
+# 退出本關的按鈕
+class Button_exit(object):
+    def __init__(self, upimage, downimage, position):
+        self.imageUp = pygame.image.load(upimage).convert_alpha()
+        self.imageUp = pygame.transform.scale(self.imageUp, (80, 80))
+        self.imageDown = pygame.image.load(downimage).convert_alpha()
+        self.imageDown = pygame.transform.scale(self.imageDown, (80, 80))
         self.position = position
 
     def isOver(self):  # 若按鈕位置重疊 兩個按鈕都會計算
@@ -260,6 +287,11 @@ curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (20
 
 # 時間文字
 time_text = head_font.render('時間', True, (200, 255, 255))
+
+# 提早退出關卡
+upImageFilename = 'exit.png'
+downImageFilename = 'exit light.png'
+button3 = Button_exit(upImageFilename, downImageFilename, (580, 50))
 
 # 關卡
 level = []
@@ -1475,17 +1507,58 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
 angle = math.pi / -6
 
+stop = ''
 # 遊戲中
 while True:
     events = pygame.event.get()
     angle += math.pi / 100
+    if '10' not in stop:
+        button3.render()  # 退出本關的按鈕
+    else:
+        if current_goal >= goal[now_level]:
+            Congrats()
+            stop = ''
+            now_level += 1
+            if now_level == 10:
+                break
+            if clock_switch == True:
+                counter = 62
+            else:
+                counter = 32
+            criminal_list = Level.Criminal(lvl=now_level + 1)
+            if remove_switch == True:
+                if tnt_list != []:
+                    criminal_list.remove(tnt_list)
+            goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
+            level_text = head_font.render('Level ' + str(level[now_level]), True, (200, 255, 255))
+            curr_goal(now_level)
+        else:
+            possibility = random.randint(1, 100)
+            if dec1_switch == True and possibility <= 40:
+                current_goal = goal[now_level]
+                continue
+            if dec2_switch == True and possibility <= 50:
+                current_goal = goal[now_level]
+                continue
+            if dec3_switch == True and possibility <= 60:
+                current_goal = goal[now_level]
+                continue
+            if dec4_switch == True and possibility <= 70:
+                current_goal = goal[now_level]
+                continue
+            Gameover()
     for e in events:
         if e.type == pygame.QUIT:
             sys.exit()
+        elif e.type == pygame.MOUSEBUTTONDOWN:
+            if button3.isOver() is True:
+                stop += '1'
+        # 如果釋放鼠標
+        elif e.type == pygame.MOUSEBUTTONUP:
+            if button3.isOver() is True:
+                stop += '0'
         if e.type == pygame.USEREVENT:
             counter -= 1
-            if killed_list == criminal_list:
-                counter = -1
             if counter >= 0:
                 text = str(counter).rjust(3)
             else:
@@ -1497,7 +1570,7 @@ while True:
                     if clock_switch == True:
                         counter = 62
                     else:
-                        counter = 32  # 不知道為甚麼要多2
+                        counter = 32
                     criminal_list = Level.Criminal(lvl=now_level + 1)
                     if remove_switch == True:
                         if tnt_list != []:
