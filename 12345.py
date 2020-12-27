@@ -510,16 +510,16 @@ class Level():
                 triangle.rect.x = pos_x[i]
                 triangle.rect.y = pos_y[i]
                 triangle_list.add(triangle)
-            pos_x = [23, 355, 480, 230, 620, 400, 340, 460, 740]
-            pos_y = [340, 150, 150, 350, 350, 520, 520, 520, 350]
+            pos_x = [23,355,480,230,590,400,300,500,740]
+            pos_y = [340,150,150,350,350,520,520,520,350]
             for i in range(9):
                 drink = Drink()
                 drink.rect.x = pos_x[i]
                 drink.rect.y = pos_y[i]
                 drink_list.add(drink)
             tnt_list = pygame.sprite.Group()
-            pos_x = [400, 310, 480, 210, 570]
-            pos_y = [150, 270, 270, 400, 400]
+            pos_x = [400,290,490,200,580]
+            pos_y = [130,300,300,450,450]
             for i in range(5):
                 tnt = Tnt()
                 tnt.rect.x = pos_x[i]
@@ -655,7 +655,7 @@ class Level():
                 drink.rect.x = pos_x[i]
                 drink.rect.y = pos_y[i]
                 drink_list.add(drink)
-            pos_x = [70,250,400,535]
+            pos_x = [70,220,400,565]
             pos_y = [150,250,250,250]
             for i in range(4):
                 tnt = Tnt()
