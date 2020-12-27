@@ -282,7 +282,7 @@ police = pygame.transform.scale(police, (40, 70))
 
 # 放字體
 head_font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
-current_goal = 0
+current_goal = 100000
 curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
 
 # 時間文字
@@ -1613,7 +1613,7 @@ while True:
         killedstr = "".join('%s' % id for id in killed_list)
         if "Killer" in killedstr:
             if donut_switch == True:
-                run_type(catch_item='殺人犯(500)')
+                judge = run_type(catch_item='殺人犯(500)')
             else:
                 judge = run_type_sentence(catch_item='殺人犯(500)')
             if judge != 0:
@@ -1640,7 +1640,7 @@ while True:
                 current_goal += 50
         elif "Drink" in killedstr:
             if donut_switch == True:
-                run_type(catch_item='酒駕犯(600)')
+                judge = run_type(catch_item='酒駕犯(600)')
             else:
                 judge = run_type_sentence(catch_item='酒駕犯(600)')
             if judge != 0:
@@ -1649,7 +1649,7 @@ while True:
                 current_goal += 600
         elif "Triangle" in killedstr:
             if donut_switch == True:
-                run_type(catch_item='三角錐(30)')
+                judge = run_type(catch_item='三角錐(30)')
             else:
                 judge = run_type_sentence(catch_item='三角錐(30)')
             if judge:
