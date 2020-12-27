@@ -1492,6 +1492,8 @@ while True:
                 if current_goal >= goal[now_level]:
                     Congrats()
                     now_level += 1
+                    if now_level == 11:
+                        break
                     if clock_switch == True:
                         counter = 62
                     else:
@@ -1598,3 +1600,22 @@ while True:
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
         continue
     break
+
+# 10關全部破關
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption('finish')  # 命名
+
+
+background = pygame.image.load('—Pngtree—cartoon superhero policeman with red_1161365.png').convert_alpha()  # 背景
+background = pygame.transform.scale(background, (800, 600))
+screen.blit(background,(0, 0))
+
+pygame.display.update()
+
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+    pygame.display.update()
