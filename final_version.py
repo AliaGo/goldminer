@@ -1492,7 +1492,7 @@ while True:
                 if current_goal >= goal[now_level]:
                     Congrats()
                     now_level += 1
-                    if now_level == 11:
+                    if now_level == 10:
                         break
                     if clock_switch == True:
                         counter = 62
