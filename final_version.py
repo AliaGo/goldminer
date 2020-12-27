@@ -41,9 +41,9 @@ pygame.mixer.music.play(-1)
 class Button(object):
     def __init__(self, upimage, downimage, position):
         self.imageUp = pygame.image.load(upimage).convert_alpha()
-        self.imageUp = pygame.transform.scale(self.imageUp, (300, 100))
+        self.imageUp = pygame.transform.scale(self.imageUp, (250, 100))
         self.imageDown = pygame.image.load(downimage).convert_alpha()
-        self.imageDown = pygame.transform.scale(self.imageDown, (300, 100))
+        self.imageDown = pygame.transform.scale(self.imageDown, (250, 100))
         self.position = position
 
     def isOver(self):  # 若按鈕位置重疊 兩個按鈕都會計算
@@ -92,10 +92,54 @@ def Instruction():
     screen.blit(text5, (20, 270))
 
 
+def Instruction1():
+    word = pygame.font.Font("NotoSansMonoCJKtc-Bold.otf", 50)
+    text = word.render("計分方式:", True, (0, 0, 70))
+    screen.blit(text, (20, 10))
+    word1 = pygame.font.Font("NotoSansMonoCJKtc-Bold.otf", 25)
+    text7 = word1.render("每關共30秒，夾到物品時把字打完才能獲得業績，並扣除相對時間", True, (0, 0, 70))
+    screen.blit(text7, (20, 80))
+    image_k = pygame.image.load('killer.png').convert_alpha()
+    image_k = pygame.transform.scale(image_k, (30, 45))
+    screen.blit(image_k, (20, 130))
+    text1 = word1.render("殺人犯: 業績加 500，花費 4 秒", True, (0, 0, 70))
+    screen.blit(text1, (80, 130))
+    image_b = pygame.image.load('bad.png').convert_alpha()
+    image_b = pygame.transform.scale(image_b, (30, 45))
+    screen.blit(image_b, (20, 180))
+    text2 = word1.render("壞蛋:   業績加 250，花費 3 秒", True, (0, 0, 70))
+    screen.blit(text2, (80, 180))
+    image_sc = pygame.image.load('scammer.png').convert_alpha()
+    image_sc = pygame.transform.scale(image_sc, (40, 40))
+    screen.blit(image_sc, (20, 230))
+    text3 = word1.render("詐欺犯: 業績加 100，花費 2 秒", True, (0, 0, 70))
+    screen.blit(text3, (80, 230))
+    image_st = pygame.image.load('stealer.png').convert_alpha()
+    image_st = pygame.transform.scale(image_st, (30, 45))
+    screen.blit(image_st, (20, 280))
+    text4 = word1.render("竊賊:   業績加 50，花費 1 秒", True, (0, 0, 70))
+    screen.blit(text4, (80, 280))
+    image_tr = pygame.image.load('triangle.png').convert_alpha()
+    image_tr = pygame.transform.scale(image_tr, (30, 45))
+    screen.blit(image_tr, (20, 330))
+    text5 = word1.render("三角錐: 業績加 30，打字完成花 1 秒，未完成花 5 秒", True, (0, 0, 70))
+    screen.blit(text5, (80, 330))
+    image_tnt = pygame.image.load('tnt.png').convert_alpha()
+    image_tnt = pygame.transform.scale(image_tnt, (40, 40))
+    screen.blit(image_tnt, (20, 380))
+    text6 = word1.render("炸彈:   業績加 0，會炸掉周圍的物品", True, (0, 0, 70))
+    screen.blit(text6, (80, 380))
+    image_d = pygame.image.load('drink.png').convert_alpha()
+    image_d = pygame.transform.scale(image_d, (40, 40))
+    screen.blit(image_d, (20, 430))
+    text8 = word1.render("酒駕犯: 業績加 600，花費 1 秒", True, (0, 0, 70))
+    screen.blit(text8, (80, 430))
+
+
 # next按鈕
 upImageFilename = 'next.png'
 downImageFilename = 'next1.png'
-button2 = Button(upImageFilename, downImageFilename, (400, 500))
+button2 = Button(upImageFilename, downImageFilename, (400, 530))
 
 # 本關目標業績畫面
 background1 = pygame.image.load('goal.png').convert_alpha()  # 背景
@@ -108,6 +152,7 @@ background2 = pygame.transform.scale(background2, (800, 600))
 # 更新畫面，等所有操作完成後一次更新（若沒更新，則元素不會出現）
 pygame.display.update()
 
+
 stop = ''
 # 事件迴圈監聽事件，進行事件處理
 while True:
@@ -117,6 +162,30 @@ while True:
         screen.fill((255, 255, 255))
         screen.blit(background, (0, 0))
         Instruction()
+        break
+    # 迭代整個事件迴圈，若有符合事件則對應處理
+    for event in pygame.event.get():
+        # 當使用者結束視窗，程式也結束
+        if event.type == pygame.QUIT:
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if button1.isOver() is True:
+                stop += '1'
+        # 如果釋放滑鼠按鈕
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if button1.isOver() is True:
+                stop += '0'
+    pygame.display.update()
+
+stop = ''
+# 事件迴圈監聽事件，進行事件處理
+while True:
+    if '10' not in stop:  # 起始頁
+        button2.render()
+    else:  # 詳細介紹頁面
+        screen.fill((255, 255, 255))
+        screen.blit(background, (0, 0))
+        Instruction1()
         break
     # 迭代整個事件迴圈，若有符合事件則對應處理
     for event in pygame.event.get():
@@ -1485,7 +1554,7 @@ while True:
         elif "Bad" in killedstr:
             judge = run_type(catch_item='壞蛋(250)')
             if judge != 0:
-                counter -= 2
+                counter -= 3
             if judge:
                 current_goal += 250
         elif "Scammer" in killedstr:
@@ -1506,7 +1575,7 @@ while True:
             else:
                 judge = run_type_sentence(catch_item='酒駕犯(600)')
             if judge != 0:
-                counter -= 2
+                counter -= 1
             if judge:
                 current_goal += 600
         elif "Triangle" in killedstr:
