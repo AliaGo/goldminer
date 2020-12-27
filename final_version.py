@@ -194,7 +194,7 @@ time_text = head_font.render('時間', True, (200, 255, 255))
 
 # 關卡
 level = []
-for i in range(1, 10):
+for i in range(1, 100):
     level.append(int(i))
 
 pygame.display.flip()
@@ -278,6 +278,7 @@ class Level():
         triangle_list = pygame.sprite.Group()
         criminal_list = pygame.sprite.Group()
         bad_list = pygame.sprite.Group()
+        global tnt_list
         tnt_list = pygame.sprite.Group()
         drink_list = pygame.sprite.Group()
         if lvl == 1:
@@ -1246,16 +1247,19 @@ def is_empty_word(word):
     return not word
 
 
-def run_type():
+def run_type(catch_item='hi'):
     global boom_switch
     pygame.init()
     word = select_word()
     counter, text = 5, '5'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
+    font2 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
+    font3 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 60)
     while True:
         screen.fill((255, 255, 255))
         sf_word = font.render(word, True, (0, 0, 0))
+        item_text = font3.render(catch_item, True, (30, 30, 30))
         center_x = screen.get_rect().width / 2 - sf_word.get_rect().width / 2
         screen.blit(sf_word, (center_x, 200))
         for event in pygame.event.get():
@@ -1277,21 +1281,24 @@ def run_type():
                 return False
         else:
             screen.blit(font.render(text, True, (0, 0, 0)), (400, 0))
+            screen.blit(item_text, (0,0))
             clock.tick(60)
             pygame.display.flip()
 
 
-def run_type_sentence():
+def run_type_sentence(catch_item='hi'):
     global boom_switch
     pygame.init()
     sentence = select_sentence()
     counter, text = 13, '13'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
-    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 15)
+    font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
     font2 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
+    font3 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 60)
     while True:
         screen.fill((255, 255, 255))
         sf_sentence = font.render(sentence, True, (0, 0, 0))
+        item_text = font3.render(catch_item, True, (30, 30, 30))
         center_x = screen.get_rect().width / 2 - sf_sentence.get_rect().width / 2
         screen.blit(sf_sentence, (center_x, 200))
         for event in pygame.event.get():
@@ -1313,6 +1320,7 @@ def run_type_sentence():
                 return False
         else:
             screen.blit(font2.render(text, True, (0, 0, 0)), (400, 0))
+            screen.blit(item_text, (0, 0))
             clock.tick(60)
             pygame.display.flip()
 
@@ -1407,10 +1415,12 @@ while True:
             sys.exit()
         if e.type == pygame.USEREVENT:
             counter -= 1
+            if killed_list == criminal_list:
+                counter = -1
             if counter >= 0:
                 text = str(counter).rjust(3)
             else:
-                if current_goal >= goal[now_level]:  ############要修成 >= #######################
+                if current_goal >= goal[now_level]:
                     Congrats()
                     now_level += 1
                     if clock_switch == True:
@@ -1418,6 +1428,9 @@ while True:
                     else:
                         counter = 32  # 不知道為甚麼要多2
                     criminal_list = Level.Criminal(lvl=now_level + 1)
+                    if remove_switch == True:
+                        if tnt_list != []:
+                            criminal_list.remove(tnt_list)
                     goal_text = head_font.render('目標業績: $' + str(goal[now_level]), True, (200, 255, 255))
                     level_text = head_font.render('Level ' + str(level[now_level]), True, (200, 255, 255))
                     curr_goal(now_level)
@@ -1462,45 +1475,45 @@ while True:
         killedstr = "".join('%s' % id for id in killed_list)
         if "Killer" in killedstr:
             if donut_switch == True:
-                run_type()
+                run_type(catch_item='殺人犯(500)')
             else:
-                judge = run_type_sentence()
+                judge = run_type_sentence(catch_item='殺人犯(500)')
             if judge != 0:
                 counter -= 4
             if judge:
                 current_goal += 500
         elif "Bad" in killedstr:
-            judge = run_type()
+            judge = run_type(catch_item='壞蛋(250)')
             if judge != 0:
                 counter -= 2
             if judge:
                 current_goal += 250
         elif "Scammer" in killedstr:
-            judge = run_type()
+            judge = run_type(catch_item='詐欺犯(100)')
             if judge != 0:
                 counter -= 2
             if judge:
                 current_goal += 100
         elif "Stealer" in killedstr:
-            judge = run_type()
+            judge = run_type(catch_item='竊賊(50)')
             if judge != 0:
                 counter -= 1
             if judge:
                 current_goal += 50
         elif "Drink" in killedstr:
             if donut_switch == True:
-                run_type()
+                run_type(catch_item='酒駕犯(600)')
             else:
-                judge = run_type_sentence()
+                judge = run_type_sentence(catch_item='酒駕犯(600)')
             if judge != 0:
                 counter -= 2
             if judge:
                 current_goal += 600
         elif "Triangle" in killedstr:
             if donut_switch == True:
-                run_type()
+                run_type(catch_item='三角錐(30)')
             else:
-                judge = run_type_sentence()
+                judge = run_type_sentence(catch_item='三角錐(30)')
             if judge:
                 current_goal += 30
                 counter -= 1
