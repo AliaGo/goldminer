@@ -116,8 +116,10 @@ def Instruction():
     screen.blit(text3, (20, 180))
     text4 = word1.render("每次通關後可在商店購買道具，使下一關更順利，", True, (0, 0, 70))
     screen.blit(text4, (20, 225))
-    text5 = word1.render("也可以在賭場進行下注，有一定機率可以直接通關。", True, (0, 0, 70))
+    text5 = word1.render("也可以投注業績進行下注，每位偵探有不同的破案機率。", True, (0, 0, 70))
     screen.blit(text5, (20, 270))
+    text6 = word1.render("若偵探成功破案即可直接通關。", True, (0, 0, 70))
+    screen.blit(text6, (20, 315))
 
 
 def Instruction1():
@@ -241,7 +243,7 @@ def curr_goal(now_level):  # 目標業績頁面
     pygame.display.update()
 
 
-goal = [750, 1350, 2210, 3210, 4045, 5500, 6780, 7560, 8900, 10000]  # 目標業績
+goal = [750, 1620, 2810, 4560, 6666, 7900, 9900, 12500, 14330, 16666]  # 目標業績
 now_level = 0  # 現在關卡
 stop = ''
 # 事件迴圈監聽事件，進行事件處理(遊戲說明)
