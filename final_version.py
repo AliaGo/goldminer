@@ -282,7 +282,7 @@ police = pygame.transform.scale(police, (40, 70))
 
 # 放字體
 head_font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
-current_goal = 100000
+current_goal = 0
 curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
 
 # 時間文字
