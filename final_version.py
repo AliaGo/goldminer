@@ -939,7 +939,7 @@ def Congrats():
     d4_text = '一位破案機率70%的名偵探'
 
     # 建偵探字tuple
-    decs_text_tuple = [(dec1_buttom, d1_text), (dec2_buttom, d2_text), (dec3_buttom, d3_text), (dec4_buttom, d4_text)]
+    decs_text_tuple = [(dec1, dec1_buttom, d1_text), (dec2, dec2_buttom, d2_text), (dec3, dec3_buttom, d3_text), (dec4, dec4_buttom, d4_text)]
 
     # 叫價錢版
     pricetag = pygame.image.load('price2.png')
@@ -1009,13 +1009,39 @@ def Congrats():
         global remove_switch
         if item == 'boom':
             boom_switch = True
+            for item_tuple in currentitems:
+                if item_tuple[0] == boom:
+                    currentitems.remove(item_tuple)
         elif item == 'clock':
             clock_switch = True
+            for item_tuple in currentitems:
+                if item_tuple[0] == clock:
+                    currentitems.remove(item_tuple)      
         elif item == 'donut':
             donut_switch = True
+            for item_tuple in currentitems:
+                if item_tuple[0] == donut:
+                    currentitems.remove(item_tuple)
         elif item == 'remove':
             remove_switch = True
-
+            for item_tuple in currentitems:
+                if item_tuple[0] == remove:
+                    currentitems.remove(item_tuple)
+    
+    def switchonornot(item):
+        global boom_switch
+        global clock_switch
+        global donut_switch
+        global remove_switch
+        if item == 'boom':
+            return boom_switch
+        if item == 'clock':
+            return clock_switch
+        if item == 'donut':
+            return donut_switch
+        if item == 'remove':
+            return remove_switch
+        
     stop = []
     # 事件迴圈監聽事件，進行事件處理
     while True:
@@ -1024,7 +1050,7 @@ def Congrats():
             window_surface.blit(background, (0, 0))
             bet_button.render()
             passbuttom.render()
-            window_surface.blit(money, (500, 0))
+            window_surface.blit(money, (450, 0))
             if item_num == 2:
                 window_surface.blit(pricetag, (320, 100))
                 window_surface.blit(price1, (345, 105))
@@ -1037,18 +1063,16 @@ def Congrats():
                 window_surface.blit(price2, (345, 235))
                 window_surface.blit(pricetag, (320, 360))
                 window_surface.blit(price3, (345, 365))
-            for item_tuple in currentitems:
-                text = whichitem(item_tuple[0])
-                item_tuple[1].render(text, messenger, (525, 150), (430, 50), notoSans_20, (41, 36, 33))
+            if len(currentitems) != 0:
+                for item_tuple in currentitems:
+                    text = whichitem(item_tuple[0])
+                    item_tuple[1].render(text, messenger, (525, 150), (430, 50), notoSans_20, (41, 36, 33))
+                
         else:  # 下注
             money = notoSans_40.render('現有資金: $' + str(current_goal), True, (255, 250, 250))
             window_surface.blit(de_background, (0, 0))
             window_surface.blit(money, (375, 0))
             b2store_button.render()
-            dec1_buttom.render()
-            dec2_buttom.render()
-            dec3_buttom.render()
-            dec4_buttom.render()
             window_surface.blit(g_pricetag, (85, 350))
             window_surface.blit(g_pricetag, (250, 350))
             window_surface.blit(g_pricetag, (400, 350))
@@ -1058,9 +1082,11 @@ def Congrats():
             window_surface.blit(d2_price, (290, 365))
             window_surface.blit(d3_price, (445, 365))
             window_surface.blit(d4_price, (590, 365))
-            for currentdec in decs_text_tuple:
-                currentdec[0].render(text=currentdec[1], text_position=(150, 430), fontsize=notoSans_40,
-                                     color=(255, 250, 250))
+            if len(decs_text_tuple) != 0:
+                for currentdec in decs_text_tuple:
+                    text = currentdec[2]
+                    currentdec[1].render(text, text_position=(150, 430), fontsize=notoSans_40,
+                                        color=(255, 250, 250))
         if '2' in stop:
             stop = []
             break
@@ -1111,38 +1137,59 @@ def Congrats():
                 if item_num == 2:
                     if item_buttom1.isOver() is True and current_goal >= pricenum1:
                         item = item_buttom1.itemtype()
-                        turnswitchon(item)
-                        current_goal -= pricenum1
+                        if switchonornot(item) != True:
+                            turnswitchon(item)
+                            current_goal -= pricenum1
 
                     elif item_buttom2.isOver() is True and current_goal >= pricenum2:
                         item = item_buttom2.itemtype()
-                        turnswitchon(item)
-                        current_goal -= pricenum2
+                        if switchonornot(item) != True:
+                            turnswitchon(item)
+                            current_goal -= pricenum2
                 if item_num == 3:
                     if item_buttom1.isOver() is True and current_goal >= pricenum1:
                         item = item_buttom1.itemtype()
-                        turnswitchon(item)
-                        current_goal -= pricenum1
+                        if switchonornot(item) != True:
+                            turnswitchon(item)
+                            current_goal -= pricenum1
                     elif item_buttom2.isOver() is True and current_goal >= pricenum2:
                         item = item_buttom2.itemtype()
-                        turnswitchon(item)
-                        current_goal -= pricenum2
+                        if switchonornot(item) != True:
+                            turnswitchon(item)
+                            current_goal -= pricenum2
                     elif item_buttom3.isOver() is True and current_goal >= pricenum3:
                         item = item_buttom3.itemtype()
-                        turnswitchon(item)
-                        current_goal -= pricenum3
+                        if switchonornot(item) != True:
+                            turnswitchon(item)
+                            current_goal -= pricenum3
                 if dec1_buttom.isOver() and current_goal >= 500:
-                    dec1_switch = True
-                    current_goal -= 500
+                    if dec1_switch != True:
+                        dec1_switch = True
+                        for currentdec in decs_text_tuple:
+                            if currentdec[0] == dec1:
+                                decs_text_tuple.remove(currentdec)
+                        current_goal -= 500
                 elif dec2_buttom.isOver() and current_goal >= 700:
-                    dec2_switch = True
-                    current_goal -= 700
+                    if dec2_switch != True:
+                        dec2_switch = True
+                        for currentdec in decs_text_tuple:
+                            if currentdec[0] == dec2:
+                                decs_text_tuple.remove(currentdec)
+                        current_goal -= 700
                 elif dec3_buttom.isOver() and current_goal >= 900:
-                    dec3_switch = True
-                    current_goal -= 900
+                    if dec3_switch != True:
+                        dec3_switch = True
+                        for currentdec in decs_text_tuple:
+                            if currentdec[0] == dec3:
+                                decs_text_tuple.remove(currentdec)
+                        current_goal -= 900
                 elif dec4_buttom.isOver() and current_goal >= 1100:
-                    dec4_switch = True
-                    current_goal -= 1100
+                    if dec4_switch != True:
+                        dec4_switch = True
+                        for currentdec in decs_text_tuple:
+                            if currentdec[0] == dec4:
+                                decs_text_tuple.remove(currentdec)
+                        current_goal -= 1100
 
         pygame.display.update()
 
