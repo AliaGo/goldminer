@@ -146,7 +146,7 @@ def curr_goal(now_level):  # 目標業績頁面
 
 
 goal = [750, 1350, 2210, 3210, 4045, 5500, 6780, 7560, 8900, 10000]  # 目標業績
-now_level = 0  # 現在關卡
+now_level = 4  # 現在關卡
 stop = ''
 # 事件迴圈監聽事件，進行事件處理(遊戲說明)
 while True:
@@ -266,22 +266,12 @@ class Tnt(pygame.sprite.Sprite):
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
 
-def find_tnt(pos_x, pos_y):
-    listxy = []
-    for i in range(len(pos_x)):
-        l = []
-        l.append(pos_x[i])
-        l.append(pos_y[i])
-        listxy.append(l)
-    return listxy
-
 ALPHA = (0, 0, 0)
 
 
 # 每關分布
 class Level():
     def Criminal(lvl):
-        global tnt_xy
         global tnt_list
         killer_list = pygame.sprite.Group()
         scammer_list = pygame.sprite.Group()
@@ -512,7 +502,6 @@ class Level():
             criminal_list.add(stealer_list)
             criminal_list.add(triangle_list)
             criminal_list.add(drink_list)
-            tnt_xy = find_tnt(pos_x, pos_y)
         if lvl == 6:
             pos_x = [60]
             pos_y = [300]
@@ -539,7 +528,6 @@ class Level():
             criminal_list.add(tnt_list)
             criminal_list.add(triangle_list)
             criminal_list.add(drink_list)
-            tnt_xy = find_tnt(pos_x, pos_y)
         if lvl == 7:
             pos_x = [70, 360, 550]
             pos_y = [400, 450, 420]
@@ -589,7 +577,6 @@ class Level():
             criminal_list.add(stealer_list)
             criminal_list.add(triangle_list)
             criminal_list.add(drink_list)
-            tnt_xy = find_tnt(pos_x, pos_y)
         if lvl == 8:
             pos_x = [70, 460]
             pos_y = [400, 400]
@@ -639,7 +626,6 @@ class Level():
             criminal_list.add(scammer_list)
             criminal_list.add(triangle_list)
             criminal_list.add(drink_list)
-            tnt_xy = find_tnt(pos_x, pos_y)
         if lvl == 9:
             pos_x = [500]
             pos_y = [460]
@@ -669,7 +655,7 @@ class Level():
                 drink.rect.x = pos_x[i]
                 drink.rect.y = pos_y[i]
                 drink_list.add(drink)
-            pos_x = [70, 250, 400, 535]
+            pos_x = [58, 250, 400, 530]
             pos_y = [150, 250, 250, 250]
             for i in range(4):
                 tnt = Tnt()
@@ -689,7 +675,6 @@ class Level():
             criminal_list.add(scammer_list)
             criminal_list.add(stealer_list)
             criminal_list.add(drink_list)
-            tnt_xy = find_tnt(pos_x, pos_y)
         if lvl == 10:
             pos_x = [40, 470]
             pos_y = [450, 400]
@@ -1252,7 +1237,7 @@ def run_type_sentence():
     global boom_switch
     pygame.init()
     sentence = select_sentence()
-    counter, text = 20, '20'.rjust(0)
+    counter, text = 15, '15'.rjust(0)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 15)
     font2 = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 100)
@@ -1291,12 +1276,13 @@ for i in range(9):
     filename = 'regularExplosion0{}.png'.format(i)
     img = pygame.image.load(filename).convert()
     img.set_colorkey((0, 0, 0))
-    img_lg = pygame.transform.scale(img, (75, 75))
+    img_lg = pygame.transform.scale(img, (200, 200))
     explosion_anim['lg'].append(img_lg)
-    img_sm = pygame.transform.scale(img, (200, 200))
+    img_sm = pygame.transform.scale(img, (600, 600))
     explosion_anim['sm'].append(img_sm)
 
 
+# TNT爆炸
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, center, size):
         pygame.sprite.Sprite.__init__(self)
@@ -1320,32 +1306,32 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = explosion_anim[self.size][self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-                a = 0
-                b = 0
-                global tnt_list
-                global tnt_xy
-                now_x = []
-                now_y = []
-                for i in tnt_list:
-                    now_x.append(i.rect.x)
-                    now_y.append(i.rect.y)
 
-                for i in range(len(tnt_xy)):
-                    if tnt_xy[i][0] not in now_x:
-                        if tnt_xy[i][1] not in now_y:
-                            a = tnt_xy[i][0]
-                            b = tnt_xy[i][1]
-                            tnt_xy.pop(i)
-                            break
 
-                x_1 = a + 120
-                x_2 = a - 120
-                y_1 = b + 120
-                y_2 = b - 120
+# 道具炸彈爆炸特效
+class Explosion2(pygame.sprite.Sprite):
+    def __init__(self, center, size):
+        pygame.sprite.Sprite.__init__(self)
+        self.size = size
+        self.image = explosion_anim[self.size][0]
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 50
 
-                for e in criminal_list:
-                    if x_2 <= e.rect.x <= x_1 and y_2 <= e.rect.y <= y_1:
-                        criminal_list.remove(e)
+    def update(self, events, dt, angle):
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_rate:
+            self.last_update = now
+            self.frame += 1
+            if self.frame == len(explosion_anim[self.size]):
+                self.kill()
+            else:
+                center = self.rect.center
+                self.image = explosion_anim[self.size][self.frame]
+                self.rect = self.image.get_rect()
+                self.rect.center = center
 
 
 # 第一關
@@ -1456,7 +1442,7 @@ while True:
             else:
                 judge = run_type_sentence()
             if judge != 0:
-                counter -= 4
+                counter -= 2
             if judge:
                 current_goal += 600
         elif "Triangle" in killedstr:
@@ -1474,6 +1460,8 @@ while True:
             for kill in killed:
                 expl = Explosion(kill.rect.center, 'lg')
                 sprites.add(expl)
+                pygame.sprite.groupcollide(criminal_list, sprites, dokilla=criminal_list, dokillb=False,
+                                           collided=pygame.sprite.collide_mask)
         curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
         continue
     break
