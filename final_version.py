@@ -1329,7 +1329,7 @@ def select_word():
 
 
 def select_sentence():
-    path = '30_sentence.txt'
+    path = '100_sentence.txt'
     with open(path, 'r', encoding='UTF-8') as f2:
         sentence_list = []
         for w in f2.readlines():
