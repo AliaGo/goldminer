@@ -11,7 +11,7 @@ pygame.init()
 # 建立 window 視窗畫布，大小為 800x600
 screen = pygame.display.set_mode((800, 600))
 # 設置視窗標題
-pygame.display.set_caption('警察抓犯人')
+pygame.display.set_caption('抓到哩丟災')
 # 清除畫面並填滿背景色
 screen.fill((255, 255, 255))
 
@@ -26,7 +26,7 @@ screen.blit(beginPolice, (0, 50))  # 對齊的座標
 # 宣告 font 文字物件
 word = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 60)
 # 渲染方法會回傳 surface 物件
-text_surface = word.render('警察抓犯人', True, (250, 155, 0))
+text_surface = word.render('抓到哩丟災', True, (250, 155, 0))
 # blit 用來把其他元素渲染到另外一個 surface 上，這邊是 window 視窗
 screen.blit(text_surface, (400, 200))
 
@@ -275,7 +275,7 @@ pygame.init()
 
 # 設遊戲視窗
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("警察抓犯人")
+pygame.display.set_caption("抓到哩丟災")
 background = pygame.image.load("background3.png").convert_alpha()
 background = pygame.transform.scale(background, (800, 600))
 # 放警察
@@ -284,7 +284,7 @@ police = pygame.transform.scale(police, (40, 70))
 
 # 放字體
 head_font = pygame.font.Font('NotoSansMonoCJKtc-Bold.otf', 30)
-current_goal = 0
+current_goal = 1000000
 curr_goal_text = head_font.render('業績:     $' + str(current_goal), True, (200, 255, 255))
 
 # 時間文字
@@ -830,7 +830,7 @@ class Policecar(pygame.sprite.Sprite):
         super().__init__()
         self.raw_image = pygame.image.load("policecar.png").convert_alpha()
         self.image = pygame.transform.scale(self.raw_image, (width, height))
-        self.image = pygame.transform.rotate(self.image, -20)
+        self.image = pygame.transform.rotate(self.image, 0)
         self.rect = self.image.get_rect()
         self.rect.topleft = (350, 30)
         self.org_image = self.image.copy()
@@ -843,8 +843,8 @@ class Policecar(pygame.sprite.Sprite):
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
                     self.groups()[0].add(Handcuff(self.rect.center, self.direction.normalize(), 25, 15))
-        self.angle = math.sin(angle) * 90
-        self.direction = pygame.Vector2(-0.25, 1).rotate(-self.angle)
+        self.angle = math.sin(angle) * 70
+        self.direction = pygame.Vector2(0, 1).rotate(-self.angle)
         self.image = pygame.transform.rotate(self.org_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
@@ -905,7 +905,7 @@ def Congrats():
     dec4_switch = False
 
     window_surface = pygame.display.set_mode((800, 600))
-    pygame.display.set_caption('警察抓犯人')  # 命名
+    pygame.display.set_caption('抓到哩丟災')  # 命名
     background = pygame.image.load('achieve.png').convert_alpha()  # 背景
     background = pygame.transform.scale(background, (800, 600))
     window_surface.blit(background, (0, 0))
@@ -1314,7 +1314,7 @@ def Gameover():
     # 初始化
     pygame.init()
     window_surface = pygame.display.set_mode((800, 600))
-    pygame.display.set_caption('警察抓犯人')  # 命名
+    pygame.display.set_caption('抓到哩丟災')  # 命名
     window_surface.fill((255, 255, 255))
 
     background = pygame.image.load('gameover.png').convert_alpha()  # 背景
@@ -1429,7 +1429,7 @@ def run_type_sentence(catch_item='hi'):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and boom_switch == True:
                     boom_switch = False
-                    return 0
+                    return 3
                 elif event.unicode == sentence[0]:
                     sentence = cut_head_char(sentence)
                     if is_empty_word(sentence):
@@ -1596,11 +1596,11 @@ while True:
         killed = {}
         sprites.update(events, dt, angle)
         sprites.draw(screen)
-        dt = clock.tick(60)
+        dt = clock.tick(80)
         screen.blit(font.render(text, True, (200, 255, 255)), (720, 10))
         pygame.display.flip()
 
-        clock.tick(60)
+        clock.tick(80)
         screen.fill((255, 255, 255))
         screen.blit(background, (0, 0))
         screen.blit(police, (425, 20))
@@ -1658,8 +1658,7 @@ while True:
                 current_goal += 30
                 counter -= 1
             elif judge == False:
-                if judge != 0:
-                    counter -= 5
+                counter -= 5
         elif "Tnt" in killedstr:
             for kill in killed:
                 expl = Explosion(kill.rect.center, 'lg')
