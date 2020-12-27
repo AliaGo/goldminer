@@ -510,7 +510,7 @@ class Level():
                 triangle.rect.x = pos_x[i]
                 triangle.rect.y = pos_y[i]
                 triangle_list.add(triangle)
-            pos_x = [23,355,480,230,590,400,300,500,740]
+            pos_x = [23,355,480,230,570,400,270,540,720]
             pos_y = [340,150,150,350,350,520,520,520,350]
             for i in range(9):
                 drink = Drink()
@@ -648,7 +648,7 @@ class Level():
                 scammer.rect.x = pos_x[i]
                 scammer.rect.y = pos_y[i]
                 scammer_list.add(scammer)
-            pos_x = [40,320,480,400,755]
+            pos_x = [40,300,480,400,755]
             pos_y = [140,210,210,480,400]
             for i in range(5):
                 drink = Drink()
@@ -656,7 +656,7 @@ class Level():
                 drink.rect.y = pos_y[i]
                 drink_list.add(drink)
             pos_x = [70,220,400,565]
-            pos_y = [150,250,250,250]
+            pos_y = [150,220,220,220]
             for i in range(4):
                 tnt = Tnt()
                 tnt.rect.x = pos_x[i]
